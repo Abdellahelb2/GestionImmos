@@ -1,0 +1,1007 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniColoc - Student Housing Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1e293b;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: #475569;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #1e293b;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #0369a1;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.white {
+  color: white;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(rgba(9, 30, 66, 0.75), rgba(9, 30, 66, 0.85)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa') no-repeat center center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  padding: 6rem 1rem;
+  margin-bottom: 4rem;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  margin-bottom: 1.2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.search-bar {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-bar button {
+  background: #0369a1;
+  color: white;
+  border: none;
+  padding: 0 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.search-bar button:hover {
+  background: #0284c7;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 8px 20px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.filter-tab.active {
+  background: #0369a1;
+  color: white;
+}
+
+.filter-tab:hover:not(.active) {
+  background: #e2e8f0;
+}
+
+.sort-options select {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #475569;
+  outline: none;
+}
+
+/* Property Grid */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 4rem;
+}
+
+.property-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.property-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.property-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #0369a1;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.property-details {
+  padding: 25px;
+}
+
+.property-price {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #0369a1;
+  margin-bottom: 12px;
+}
+
+.property-price span {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: normal;
+}
+
+.property-title {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #1e293b;
+}
+
+.property-location {
+  color: #64748b;
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.property-location i {
+  color: #0369a1;
+  margin-right: 5px;
+}
+
+.property-features {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 18px;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.property-features span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.property-features i {
+  color: #0369a1;
+}
+
+/* Testimonials */
+.testimonials {
+  background-color: #f8fafc;
+  padding: 5rem 0;
+  margin-bottom: 4rem;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-text {
+  font-style: italic;
+  margin-bottom: 25px;
+  color: #475569;
+  position: relative;
+  line-height: 1.7;
+}
+
+.testimonial-text::before {
+  content: '"';
+  font-size: 4rem;
+  color: #e2e8f0;
+  position: absolute;
+  top: -25px;
+  left: -15px;
+  z-index: 0;
+  opacity: 0.5;
+  font-family: Georgia, serif;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+.testimonial-info h4 {
+  margin-bottom: 3px;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.testimonial-info p {
+  margin-bottom: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Call to Action */
+.cta-section {
+  background: linear-gradient(135deg, #0c4a6e, #0369a1);
+  color: white;
+  text-align: center;
+  padding: 5rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 4rem;
+  box-shadow: 0 10px 25px rgba(3, 105, 161, 0.2);
+}
+
+.cta-section h2 {
+  margin-bottom: 1.2rem;
+  font-size: 2.4rem;
+  color: white;
+}
+
+.cta-section p {
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  font-size: 1.15rem;
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.btn-cta {
+  padding: 14px 32px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cta-primary {
+  background: white;
+  color: #0369a1;
+  border: none;
+}
+
+.btn-cta-primary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cta-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-cta-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+  
+  .property-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .filter-tabs {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .sort-options {
+    width: 100%;
+  }
+  
+  .sort-options select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 4rem 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .search-bar {
+    flex-direction: column;
+    border-radius: 8px;
+  }
+  
+  .search-bar input {
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .search-bar button {
+    border-radius: 0 0 8px 8px;
+    padding: 12px 0;
+    width: 100%;
+  }
+  
+  .property-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .btn-cta {
+    width: 100%;
+  }
+  
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add professional real estate specific styling */
+/* Navigation (assuming you'll add a nav) */
+nav {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 18px 0;
+}
+
+/* Property Status Badges */
+.status-for-sale {
+  background: #0369a1 !important;
+}
+
+.status-for-rent {
+  background: #0891b2 !important;
+}
+
+.status-sold {
+  background: #dc2626 !important;
+}
+
+.status-featured {
+  background: #ca8a04 !important;
+}
+
+/* Property Type Icons */
+.icon-apartment {
+  color: #0891b2;
+}
+
+.icon-house {
+  color: #0369a1;
+}
+
+.icon-commercial {
+  color: #9333ea;
+}
+
+.icon-land {
+  color: #65a30d;
+}
+
+/* Agent Cards (if you add them later) */
+.agent-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+.agent-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.agent-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 15px;
+  border: 3px solid #e2e8f0;
+}
+
+.agent-name {
+  margin-bottom: 5px;
+  color: #1e293b;
+}
+
+.agent-title {
+  color: #64748b;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.agent-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.agent-contact a {
+  color: #0369a1;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.agent-contact a:hover {
+  color: #0c4a6e;
+}
+
+/* Form styling for property inquiry or contact */
+.contact-form {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 3rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #0369a1;
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.1);
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.btn-form {
+  background: #0369a1;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-form:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
+}
+
+/* Font Awesome Icons Styling */
+.fas {
+  width: 16px;
+}
+    </style>
+</head>
+<body>
+<!-- Main Content -->
+<main class="container">
+  <!-- Hero Section -->
+  <section class="hero">
+      <h1 class="white">Solutions de gestion immobilière</h1>
+      <p class="white">Services professionnels de gestion immobilière pour les investisseurs, les propriétaires et les propriétaires fonciers</p>
+      <div class="search-bar">
+          <input type="text" placeholder="Search by property type, location, or price range...">
+          <button>Search</button>
+      </div>
+  </section>
+
+  <!-- Featured Listings -->
+  <section>
+      <h2 class="section-title">Propriétés en vedette</h2>
+      <div class="filter-section">
+          <div class="filter-tabs">
+              <div class="filter-tab active">Toutes les propriétés</div>
+              <div class="filter-tab">Résidentielle</div>
+              <div class="filter-tab">Commercial</div>
+              <div class="filter-tab">Investissement</div>
+              <div class="filter-tab">Nouveaux développements</div>
+          </div>
+          <div class="sort-options">
+              <select>
+                  <option>Sort by: Featured</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                  <option>Newest First</option>
+              </select>
+          </div>
+      </div>
+
+      <div class="property-grid">
+          <!-- Property Card 1 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2" alt="Luxury apartment" class="property-image">
+              <div class="property-badge status-for-sale">For Sale</div>
+              <div class="property-details">
+                  <div class="property-price">€450,000</div>
+                  <h3 class="property-title">Luxury Apartment in Paris Centre</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> Paris 5e, Saint-Germain
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-bed"></i> 2 bedrooms</span>
+                      <span><i class="fas fa-ruler-combined"></i> 85m²</span>
+                      <span><i class="fas fa-car"></i> 1 parking</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Property Card 2 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Modern apartment" class="property-image">
+              <div class="property-badge status-for-rent">For Rent</div>
+              <div class="property-details">
+                  <div class="property-price">€1,600 <span>/month</span></div>
+                  <h3 class="property-title">Modern Flat in Berlin Mitte</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> Berlin, Mitte District
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-bed"></i> 1 bedroom</span>
+                      <span><i class="fas fa-bath"></i> 1 bathroom</span>
+                      <span><i class="fas fa-couch"></i> Furnished</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Property Card 3 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb" alt="Commercial office" class="property-image">
+              <div class="property-badge status-featured">Featured</div>
+              <div class="property-details">
+                  <div class="property-price">€750,000</div>
+                  <h3 class="property-title">Commercial Office in Amsterdam</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> Amsterdam, Business District
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-building"></i> Office</span>
+                      <span><i class="fas fa-ruler-combined"></i> 210m²</span>
+                      <span><i class="fas fa-parking"></i> 5 parking</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Property Card 4 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688" alt="Mediterranean villa" class="property-image">
+              <div class="property-badge status-for-sale">For Sale</div>
+              <div class="property-details">
+                  <div class="property-price">€850,000</div>
+                  <h3 class="property-title">Mediterranean Villa in Barcelona</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> Barcelona, Sarrià-Sant Gervasi
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-bed"></i> 4 bedrooms</span>
+                      <span><i class="fas fa-swimming-pool"></i> Pool</span>
+                      <span><i class="fas fa-tree"></i> Garden</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Property Card 5 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1554469384-e58fac16e23a" alt="Penthouse apartment" class="property-image">
+              <div class="property-badge status-for-rent">For Rent</div>
+              <div class="property-details">
+                  <div class="property-price">€3,500 <span>/month</span></div>
+                  <h3 class="property-title">Luxury Penthouse in London</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> London, Canary Wharf
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-bed"></i> 3 bedrooms</span>
+                      <span><i class="fas fa-border-all"></i> Terrace</span>
+                      <span><i class="fas fa-lock"></i> 24h Security</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Property Card 6 -->
+          <div class="property-card">
+              <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" alt="Detached house" class="property-image">
+              <div class="property-badge status-sold">Sold</div>
+              <div class="property-details">
+                  <div class="property-price">€620,000</div>
+                  <h3 class="property-title">Detached House in Rome</h3>
+                  <div class="property-location">
+                      <i class="fas fa-map-marker-alt"></i> Rome, Parioli
+                  </div>
+                  <div class="property-features">
+                      <span><i class="fas fa-bed"></i> 3 bedrooms</span>
+                      <span><i class="fas fa-car-side"></i> Garage</span>
+                      <span><i class="fas fa-home"></i> 180m²</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+<style>
+  /* Services Section Styling */
+.services-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  position: relative;
+}
+
+.section-title:after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #9333ea;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 2.5rem;
+  color: #9333ea;
+  margin-bottom: 1.5rem;
+}
+
+.service-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.service-card p {
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .service-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+  <section class="services-section">
+      <h2 class="section-title">Our Property Management Services</h2>
+      <div class="services-grid">
+          <div class="service-card">
+              <i class="fas fa-building service-icon"></i>
+              <h3>Property Marketing</h3>
+              <p>Professional photography, virtual tours, and targeted advertising to find quality tenants quickly.</p>
+          </div>
+          <div class="service-card">
+              <i class="fas fa-file-contract service-icon"></i>
+              <h3>Tenant Screening</h3>
+              <p>Comprehensive background checks, credit history verification, and employment verification.</p>
+          </div>
+          <div class="service-card">
+              <i class="fas fa-tools service-icon"></i>
+              <h3>Maintenance Management</h3>
+              <p>24/7 emergency services, preventative maintenance, and vendor coordination.</p>
+          </div>
+          <div class="service-card">
+              <i class="fas fa-money-bill-wave service-icon"></i>
+              <h3>Rent Collection</h3>
+              <p>Efficient rent collection, digital payment options, and strict enforcement of late fees.</p>
+          </div>
+      </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+      <h2 class="section-title">Testimonials from Our Clients</h2>
+      <div class="container">
+          <div class="testimonial-grid">
+              <!-- Testimonial 1 -->
+              <div class="testimonial-card">
+                  <div class="testimonial-text">
+                      "Their property management services exceeded our expectations. The team is professional and always responsive to our needs."
+                  </div>
+                  <div class="testimonial-author">
+                      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Thomas" class="testimonial-avatar">
+                      <div class="testimonial-info">
+                          <h4>Thomas Bernard</h4>
+                          <p>Property Investor</p>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Testimonial 2 -->
+              <div class="testimonial-card">
+                  <div class="testimonial-text">
+                      "I was nervous about entrusting my properties to a management company, but the experience has been seamless from start to finish. Highly recommended."
+                  </div>
+                  <div class="testimonial-author">
+                      <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Laurent" class="testimonial-avatar">
+                      <div class="testimonial-info">
+                          <h4>Laurent Dupont</h4>
+                          <p>Multiple Property Owner</p>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Testimonial 3 -->
+              <div class="testimonial-card">
+                  <div class="testimonial-text">
+                      "Incredible results in half the time. Their market analysis and pricing strategy helped maximize our rental income significantly."
+                  </div>
+                  <div class="testimonial-author">
+                      <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="Claire" class="testimonial-avatar">
+                      <div class="testimonial-info">
+                          <h4>Claire Moreau</h4>
+                          <p>Real Estate Developer</p>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Testimonial 4 -->
+              <div class="testimonial-card">
+                  <div class="testimonial-text">
+                      "I've tried several property management companies, but this one is truly exceptional. Their service is fast, reliable, and truly user-friendly."
+                  </div>
+                  <div class="testimonial-author">
+                      <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Marc" class="testimonial-avatar">
+                      <div class="testimonial-info">
+                          <h4>Marc Lefevre</h4>
+                          <p>Commercial Property Investor</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "I've tried several property management companies, but this one is truly exceptional. Their service is fast, reliable, and truly user-friendly."
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Marc" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Marc Lefevre</h4>
+                        <p>Commercial Property Investor</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="testimonial-text">
+                  "I've tried several property management companies, but this one is truly exceptional. Their service is fast, reliable, and truly user-friendly."
+              </div>
+              <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/92.jpg" alt="Marc" class="testimonial-avatar">
+                  <div class="testimonial-info">
+                      <h4>Marc Lefevre</h4>
+                      <p>Commercial Property Investor</p>
+                  </div>
+              </div>
+          </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+      <h2>Ready to Maximize Your Property Investment?</h2>
+      <p>Join thousands of property owners who trust our professional management services</p>
+      <div class="cta-buttons">
+          <button class="btn-cta btn-cta-primary">View Available Properties</button>
+          <button class="btn-cta btn-cta-outline">List Your Property</button>
+      </div>
+  </section>
+</main>
+{% endblock content %}

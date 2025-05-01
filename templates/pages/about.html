@@ -1,0 +1,422 @@
+{%extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - UniColoc | Solutions de logement étudiant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+:root {
+
+  --primary-color: #4361ee;
+  --primary-dark: #3a0ca3;
+  --secondary-color: #3f37c9;
+  --accent-color: #f72585;
+  --dark-color: #1a1a2e;
+  --light-color: #f8f9fa;
+  --light-gray: #e9ecef;
+  --medium-gray: #adb5bd;
+  --white: #ffffff;
+  
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.about-hero {
+  text-align: center;
+  padding: var(--space-xl) 0;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  margin-bottom: var(--space-xl);
+}
+
+.about-hero h1 {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.about-hero p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Section Notre Mission */
+.mission-section {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.mission-content {
+  flex: 1;
+}
+
+.mission-image {
+  flex: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.mission-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin-bottom: var(--space-md);
+  color: var(--primary-dark);
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--space-lg);
+}
+
+/* Section Équipe */
+.team-section {
+  background-color: var(--white);
+  padding: var(--space-xl) 0;
+  margin-bottom: var(--space-xl);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.team-card {
+  background: var(--light-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s;
+  text-align: center;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+}
+
+.team-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.team-info {
+  padding: var(--space-md);
+}
+
+.team-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.team-position {
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Section Chiffres */
+.stats-section {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  color: var(--white);
+  padding: var(--space-xl) 0;
+  margin-bottom: var(--space-xl);
+  border-radius: var(--radius-lg);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+.stat-item {
+  padding: var(--space-md);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Section Valeurs */
+.values-section {
+  margin-bottom: var(--space-xl);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.value-card {
+  background: var(--white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border-top: 4px solid var(--primary-color);
+}
+.white{
+    color: white;
+}
+.value-icon {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: var(--space-md);
+}
+
+.value-title {
+  font-size: 1.3rem;
+  margin-bottom: var(--space-sm);
+}
+
+/* CTA Section */
+.about-cta {
+  text-align: center;
+  padding: var(--space-xl) 0;
+  background-color: var(--light-color);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .mission-section {
+    flex-direction: column;
+  }
+  
+  .about-hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+  
+  .about-hero {
+    padding: var(--space-lg) 0;
+  }
+}
+    </style>
+</head>
+<body>
+    <!-- Contenu principal -->
+    <main class="container">
+        <!-- Hero À propos -->
+        <section class="about-hero">
+            <h1 class="white">Notre mission : révolutionner le logement étudiant</h1>
+            <p class="white">Depuis 2023, nous connectons les étudiants avec des solutions de logement abordables et de qualité près des campus universitaires.</p>
+        </section>
+
+        <!-- Section Notre Histoire -->
+        <section class="mission-section">
+            <div class="mission-content">
+                <h2 class="section-title">Notre histoire :</h2>
+                <p class="section-subtitle">D'une simple idée à une plateforme nationale</p>
+                <p>UniColoc est né de la frustration de quatre étudiants qui peinaient à trouver un logement décent près de leur université. Après des mois de recherches infructueuses et de colocations mal assorties, nous avons décidé de créer la solution que nous aurions aimé avoir.</p>
+                <p>Ce qui a commencé comme un petit projet local à Paris s'est rapidement étendu à plus de 20 villes universitaires en France. Aujourd'hui, nous aidons des milliers d'étudiants à trouver leur chez-soi chaque année.</p>
+            </div>
+            <div class="mission-image">
+                <img src="https://images.unsplash.com/photo-1529408632839-a54952c491e5" alt="Équipe UniColoc travaillant ensemble">
+            </div>
+        </section>
+
+        <!-- Section Chiffres -->
+        <section class="stats-section">
+            <h2 class="section-title" style="color: var(--white); text-align: center;">UniColoc en chiffres</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">29K+</div>
+                    <div class="stat-label">Étudiants hébergés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Annonces vérifiées</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">Villes universitaires</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-label">Satisfaction moyenne</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Notre Mission -->
+        <section class="mission-section" style="flex-direction: row-reverse;">
+            <div class="mission-content">
+                <h2 class="section-title">Notre mission :</h2>
+                <p class="section-subtitle">Simplifier la recherche de logement étudiant</p>
+                <p>Nous croyons que chaque étudiant mérite un logement sûr, abordable et bien situé pour réussir ses études. Notre plateforme élimine le stress de la recherche en connectant directement les étudiants avec des propriétaires de confiance et des colocataires compatibles.</p>
+                <p>Grâce à notre système de vérification rigoureux et nos outils de matching intelligent, nous avons réduit le temps moyen de recherche de logement de 3 mois à moins de 2 semaines.</p>
+            </div>
+            <div class="mission-image">
+                <img src="{% static 'image/heureux.png' %}" alt="Étudiants heureux dans leur colocation">
+            </div>
+        </section>
+
+        <!-- Section Valeurs -->
+        <section class="values-section">
+            <h2 class="section-title">Nos valeurs</h2>
+            <p class="section-subtitle">Ce qui guide chacune de nos actions</p>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3 class="value-title">Solidarité étudiante</h3>
+                    <p>Nous favorisons l'entraide entre étudiants et créons des communautés de colocataires solidaires.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="value-title">Sécurité avant tout</h3>
+                    <p>Toutes nos annonces sont vérifiées et nos utilisateurs authentifiés pour votre tranquillité d'esprit.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-euro-sign"></i></div>
+                    <h3 class="value-title">Transparence tarifaire</h3>
+                    <p>Pas de frais cachés. Les prix affichés sont les prix réels, avec un plafonnement des commissions.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3 class="value-title">Expertise universitaire</h3>
+                    <p>Notre équipe connaît parfaitement les spécificités de chaque campus et quartier étudiant.</p>
+                </div>
+                <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                  <h3 class="value-title">Écoresponsabilité urbaine</h3>
+                  <p>Nous encourageons des modes de vie durables en ville, en valorisant les logements économes en énergie et proches des transports en commun.</p>
+              </div>
+              <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-universal-access"></i></div>
+                  <h3 class="value-title">Accessibilité pour tous</h3>
+                  <p>Nous œuvrons pour que chaque étudiant, quel que soit son budget ou sa situation, puisse accéder à un logement digne et adapté.</p>
+              </div>
+              
+            </div>
+        </section>
+
+        <!-- Section Équipe -->
+        <section class="team-section">
+            <h2 class="section-title">Notre équipe</h2>
+            <p class="section-subtitle">Les passionnés derrière UniColoc</p>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Marie Dubois" class="team-image">
+                    <div class="team-info">
+                        <h4 class="team-name">Abdellah El Berdai</h4>
+                        <p class="team-position">CEO & Co-fondatrice</p>
+                        <p>Ancienne étudiante en sociologie, Abdellah a vécu 6 colocations différentes avant de créer UniColoc.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/men/99.jpg" alt="Thomas Martin" class="team-image">
+                    <div class="team-info">
+                        <h4 class="team-name">Taha Akkajaj</h4>
+                        <p class="team-position">CTO & Co-fondateur</p>
+                        <p>Expert en technologie, Taha a développé notre algorithme de matching des colocataires.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Sophie Lambert" class="team-image">
+                    <div class="team-info">
+                        <h4 class="team-name"> Youssef Oullaha</h4>
+                        <p class="team-position">Responsable Relations Étudiants</p>
+                        <p>Youssef organise nos événements de rencontre et veille à la satisfaction des utilisateurs.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/women/54.jpg" alt="Jean Petit" class="team-image">
+                    <div class="team-info">
+                        <h4 class="team-name">Doha Ayad</h4>
+                        <p class="team-position">Responsable Vérification</p>
+                        <p>Doha et son équipe vérifient chaque annonce et visitent les logements en personne.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="about-cta">
+            <h2 class="section-title">Prêt à trouver votre future colocation ?</h2>
+            <p>Rejoignez la communauté UniColoc et simplifiez votre recherche de logement étudiant.</p>
+            <div style="margin-top: var(--space-lg);">
+                <a href="{% url 'Register' %}" class="btn btn-primary" style="padding: var(--space-md) var(--space-lg);">Créer un compte gratuit</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+{% endblock content %}
