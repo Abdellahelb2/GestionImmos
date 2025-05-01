@@ -806,7 +806,7 @@ footer::before {
     <nav class="navbar">
         <div class="logo">
           <a href="{% url 'SayHello' %}">
-            <img src="\media\photos\25\04\25\logo.png" alt="Toit et Moi">Toit et Moi
+            <img src="\media\photos\25\04\25\logo.png" alt="Toit et Moi">
           </a>        
         </div>
         <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
@@ -823,11 +823,7 @@ footer::before {
             {% if user.is_authenticated %}
             <li class="relative">
               <a href="javascript:void(0)" id="profile-menu-toggle">
-                 
-                <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'image/pfp.jpg' %}{% endif %}" 
-                alt="Profile Picture" 
-                class="w-12 h-12 rounded-full border-2 border-primary-light">
-           
+                <img src="{{ request.user.profile_picture.url }}"  alt="Profile Picture" class="w-12 h-12 rounded-full border-2 border-primary-light">
               </a>
           </li>
           
@@ -842,7 +838,7 @@ footer::before {
            </ul>
             {% else %}
             <li><a href="{% url 'Loginpage' %}">Login</a></li>
-            <li><a href="{% url 'Registerpage' %}">Register</a></li>
+            <li><a href="{% url 'Register' %}">Register</a></li>
             {% endif %}
         </ul>
     </nav>
@@ -857,7 +853,7 @@ footer::before {
             <div class="footer-container">
                 <section class="footer-section">
                     <h4>About Us</h4>
-                    <p>Connecting students with affordable housing solutions since 2023. Our platform makes finding roommates and shared accommodations easy and safe.</p>
+                    <p>bihbvshjvbjsbjkvm.</p>
                 </section>
     
                 <section class="footer-section">

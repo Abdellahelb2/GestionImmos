@@ -121,7 +121,6 @@ def dash(request):
 
 @login_required(login_url='/login/')
 def add_product(request):
-   
     if request.user.status != 'entrepreneur':
         messages.error(request, "❌ Tu n'as pas de droit d'ajouter un produit ici")
         return redirect('main')

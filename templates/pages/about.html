@@ -1,46 +1,55 @@
 {%extends 'base.html' %}
 {% block content %}
 {% load static %}
+<style>
 
-
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>À propos - UniColoc | Solutions de logement étudiant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
+  /* Variables globales */
 :root {
-
-  --primary-color: #4361ee;
-  --primary-dark: #3a0ca3;
-  --secondary-color: #3f37c9;
-  --accent-color: #f72585;
-  --dark-color: #1a1a2e;
-  --light-color: #f8f9fa;
-  --light-gray: #e9ecef;
-  --medium-gray: #adb5bd;
-  --white: #ffffff;
+  /* Palette de couleurs */
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #10b981;
+  --accent-color: #f43f5e;
+  --success-color: #3b82f6;
+  --dark-color: #111827;
+  --darker-color: #030712;
+  --light-color: #f9fafb;
+  --light-gray: #f3f4f6;
+  --medium-gray: #9ca3af;
+  --dark-gray: #4b5563;
+  --text-color: #1f2937;
+  --light-text: #ffffff;
   
-
+  /* Espacement */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
   
-
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  /* Typographie */
+  --font-main: 'Inter', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  
+  /* Ombres et effets */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Transitions */
+  --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Arrondis */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-full: 9999px;
 }
 
+/* Reset et styles de base */
 * {
   margin: 0;
   padding: 0;
@@ -48,44 +57,217 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.6;
-  color: var(--dark-color);
+  font-family: var(--font-main);
+  color: var(--text-color);
   background-color: var(--light-color);
+  line-height: 1.7;
+  overflow-x: hidden;
 }
 
 .container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 var(--space-md);
+  padding: 0 var(--space-sm);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: all var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+p {
+  margin-bottom: var(--space-sm);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-fast);
+}
+
+img:hover {
+  transform: scale(1.03);
+}
+
+.white {
+  color: var(--light-text);
+}
+
+/* Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: height var(--transition-fast);
+  z-index: -1;
+}
+
+.btn:hover::after {
+  height: 100%;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+}
+
+.btn-secondary:hover {
+  background-color: #0ca678;
+  transform: translateY(-3px);
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: var(--light-text);
+}
+
+.btn-accent:hover {
+  background-color: #e11d48;
+  transform: translateY(-3px);
+}
+
+/* Titres de section */
+.section-title {
+  font-size: 2.75rem;
+  margin-bottom: var(--space-md);
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 50px;
+  height: 5px;
+  background: var(--accent-color);
+  border-radius: var(--radius-full);
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: var(--dark-gray);
+  margin-bottom: var(--space-md);
+  font-weight: 500;
+}
+
+/* Hero section */
 .about-hero {
-  text-align: center;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
   padding: var(--space-xl) 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: white;
-  margin-bottom: var(--space-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.about-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: var(--light-color);
+  clip-path: polygon(0 0, 100% 100%, 100% 100%, 0% 100%);
+}
+
+.about-hero h1,
+.about-hero p {
+  position: relative;
+  z-index: 1;
 }
 
 .about-hero h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: var(--space-md);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(to right, var(--light-text), var(--light-gray));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .about-hero p {
+  font-size: 1.25rem;
   max-width: 700px;
-  margin: 0 auto;
-  font-size: 1.2rem;
-  opacity: 0.9;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
 }
 
-/* Section Notre Mission */
+/* Sections Mission */
 .mission-section {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
-  margin-bottom: var(--space-xl);
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+  position: relative;
 }
 
 .mission-content {
@@ -94,329 +276,616 @@ body {
 
 .mission-image {
   flex: 1;
+  position: relative;
   border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mission-image img {
+  border-radius: 0;
+  transition: transform var(--transition-smooth);
+  width: 100%;
+}
+
+.mission-image:hover img {
+  transform: scale(1.05);
+}
+
+.mission-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, var(--primary-color), transparent);
+  opacity: 0.3;
+  z-index: 1;
+  border-radius: var(--radius-lg);
+  transition: opacity var(--transition-fast);
+}
+
+.mission-image:hover::before {
+  opacity: 0.5;
+}
+
+/* Section Chiffres */
+.stats-section {
+  background: linear-gradient(135deg, var(--dark-color), var(--darker-color));
+  color: var(--light-text);
+  padding: var(--space-lg) 0;
+  margin: var(--space-xl) 0;
+  border-radius: var(--radius-lg);
+  position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
 }
 
-.mission-image img {
-  width: 100%;
-  height: auto;
-  display: block;
+.stats-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, var(--primary-light) 0%, transparent 70%);
+  opacity: 0.05;
+  z-index: 0;
 }
 
-.section-title {
-  font-size: 2.2rem;
-  margin-bottom: var(--space-md);
-  color: var(--primary-dark);
-}
-
-.section-subtitle {
-  font-size: 1.2rem;
-  color: var(--secondary-color);
+.stats-section .section-title {
+  text-align: center;
   margin-bottom: var(--space-lg);
+}
+
+.stats-section .section-title::after {
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-color);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+
+.stat-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary-color);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--transition-fast);
+}
+
+.stat-item:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.stat-item:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.stat-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: var(--space-xs);
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--light-gray);
+}
+
+/* Section Valeurs */
+.values-section {
+  margin: var(--space-xl) 0;
+  padding: var(--space-md) 0;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.value-card {
+  background-color: var(--light-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+  border: 1px solid var(--light-gray);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--transition-fast);
+}
+
+.value-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-md);
+  border-color: transparent;
+}
+
+.value-card:hover::before {
+  opacity: 0.05;
+}
+
+.value-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: var(--primary-light);
+  color: var(--light-text);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-sm);
+  transition: all var(--transition-fast);
+}
+
+.value-card:hover .value-icon {
+  background-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.value-title {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+  color: var(--dark-color);
+  transition: color var(--transition-fast);
+}
+
+.value-card:hover .value-title {
+  color: var(--primary-dark);
 }
 
 /* Section Équipe */
 .team-section {
-  background-color: var(--white);
-  padding: var(--space-xl) 0;
-  margin-bottom: var(--space-xl);
+  margin: var(--space-xl) 0;
+  padding: var(--space-md) 0;
+  position: relative;
 }
 
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
 .team-card {
-  background: var(--light-color);
+  background-color: var(--light-color);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.3s;
-  text-align: center;
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
 .team-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-md);
 }
 
 .team-image {
+  position: relative;
   width: 100%;
-  height: 200px;
+  aspect-ratio: 1;
   object-fit: cover;
+  transition: all var(--transition-fast);
+}
+
+.team-card:hover .team-image {
+  transform: scale(1.05);
 }
 
 .team-info {
-  padding: var(--space-md);
-}
-
-.team-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: var(--space-xs);
-}
-
-.team-position {
-  color: var(--medium-gray);
-  font-size: 0.9rem;
-  margin-bottom: var(--space-md);
-}
-
-/* Section Chiffres */
-.stats-section {
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-  color: var(--white);
-  padding: var(--space-xl) 0;
-  margin-bottom: var(--space-xl);
-  border-radius: var(--radius-lg);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-lg);
+  padding: var(--space-sm);
+  position: relative;
   text-align: center;
 }
 
-.stat-item {
-  padding: var(--space-md);
-}
-
-.stat-number {
-  font-size: 3rem;
+.team-name {
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 0.25rem;
+  color: var(--dark-color);
 }
 
-.stat-label {
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
-/* Section Valeurs */
-.values-section {
-  margin-bottom: var(--space-xl);
-}
-
-.values-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-.value-card {
-  background: var(--white);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  border-top: 4px solid var(--primary-color);
-}
-.white{
-    color: white;
-}
-.value-icon {
-  font-size: 2rem;
+.team-position {
+  font-size: 0.9rem;
   color: var(--primary-color);
-  margin-bottom: var(--space-md);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.value-title {
-  font-size: 1.3rem;
-  margin-bottom: var(--space-sm);
+.team-card p {
+  font-size: 0.95rem;
+  color: var(--dark-gray);
+}
+
+.team-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  transform: scaleX(0);
+  transition: transform var(--transition-fast);
+  transform-origin: right;
+}
+
+.team-card:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 /* CTA Section */
 .about-cta {
+  background: linear-gradient(135deg,   #ded522, #116ddd);
+  padding: var(--space-lg);
   text-align: center;
-  padding: var(--space-xl) 0;
-  background-color: var(--light-color);
   border-radius: var(--radius-lg);
-  margin-bottom: var(--space-xl);
+  margin: var(--space-xl) 0;
+  position: relative;
+  overflow: hidden;
+  color: var(--light-text);
+  box-shadow: var(--shadow-lg);
 }
-/* Responsive */
-@media (max-width: 768px) {
-  .mission-section {
-    flex-direction: column;
+
+.about-cta::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  opacity: 0.1;
+}
+
+.about-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--secondary-color);
+  opacity: 0.1;
+}
+
+.about-cta h2 {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.about-cta p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto var(--space-md);
+}
+
+.about-cta .btn {
+  background-color: var(--light-color);
+  color: var(--primary-dark);
+  font-weight: 700;
+  padding: 1rem 2rem;
+}
+
+.about-cta .btn:hover {
+  background-color: var(--light-text);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  :root {
+    --space-xl: 5rem;
+    --space-lg: 3rem;
   }
   
-  .about-hero h1 {
-    font-size: 2.2rem;
+  .mission-section {
+    flex-direction: column !important;
+  }
+  
+  .mission-image {
+    order: 1;
+    margin-bottom: var(--space-md);
+  }
+  
+  .mission-content {
+    order: 2;
   }
   
   .section-title {
-    font-size: 1.8rem;
+    font-size: 2.25rem;
+  }
+  
+  .about-hero h1 {
+    font-size: 2.75rem;
   }
 }
 
-@media (max-width: 480px) {
-  .navbar {
-    flex-direction: column;
-    gap: var(--space-md);
+@media (max-width: 768px) {
+  :root {
+    --space-xl: 4rem;
+    --space-lg: 2.5rem;
+    --space-md: 1.5rem;
   }
   
-  .nav-links {
-    flex-direction: column;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-sm);
-    text-align: center;
   }
   
-  .about-hero {
-    padding: var(--space-lg) 0;
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .about-hero h1 {
+    font-size: 2.25rem;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
   }
 }
-    </style>
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .about-hero h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.about-hero h1 {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.about-hero p {
+  animation: fadeInUp 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.mission-content {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.mission-image {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+.stats-section, .values-section, .team-section, .about-cta {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Ajout de polices Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Ajout de Font Awesome pour les icônes */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+</style>
 </head>
 <body>
-    <!-- Contenu principal -->
-    <main class="container">
-        <!-- Hero À propos -->
-        <section class="about-hero">
-            <h1 class="white">Notre mission : révolutionner le logement étudiant</h1>
-            <p class="white">Depuis 2023, nous connectons les étudiants avec des solutions de logement abordables et de qualité près des campus universitaires.</p>
-        </section>
+   <!-- Contenu principal -->
+<main class="container">
+  <!-- Hero À propos -->
+  <section class="about-hero">
+      <h1 class="white">Notre mission : simplifier la gestion immobilière pour tous</h1>
+      <p class="white">Depuis 2023, nous mettons en relation des entrepreneurs de l'immobilier et des particuliers à la recherche de biens à acheter ou à louer.</p>
+  </section>
 
-        <!-- Section Notre Histoire -->
-        <section class="mission-section">
-            <div class="mission-content">
-                <h2 class="section-title">Notre histoire :</h2>
-                <p class="section-subtitle">D'une simple idée à une plateforme nationale</p>
-                <p>UniColoc est né de la frustration de quatre étudiants qui peinaient à trouver un logement décent près de leur université. Après des mois de recherches infructueuses et de colocations mal assorties, nous avons décidé de créer la solution que nous aurions aimé avoir.</p>
-                <p>Ce qui a commencé comme un petit projet local à Paris s'est rapidement étendu à plus de 20 villes universitaires en France. Aujourd'hui, nous aidons des milliers d'étudiants à trouver leur chez-soi chaque année.</p>
-            </div>
-            <div class="mission-image">
-                <img src="https://images.unsplash.com/photo-1529408632839-a54952c491e5" alt="Équipe UniColoc travaillant ensemble">
-            </div>
-        </section>
+  <!-- Section Notre Histoire -->
+  <section class="mission-section">
+      <div class="mission-content">
+          <h2 class="section-title">Notre histoire :</h2>
+          <p class="section-subtitle">D'une idée locale à une plateforme immobilière nationale</p>
+          <p>Toit et Moi est né de la volonté de rendre le marché immobilier plus accessible, transparent et efficace. Lassés des démarches complexes et du manque de confiance dans les annonces classiques, nous avons voulu créer une plateforme moderne dédiée à la vente et à la location de biens, aussi bien pour les particuliers que pour les professionnels.</p>
+          <p>Ce projet, lancé à Lyon, s’est rapidement imposé comme une référence dans plus de 15 régions françaises. Aujourd’hui, Toit et Moi accompagne chaque mois des centaines d'utilisateurs dans leurs projets immobiliers.</p>
+      </div>
+      <div class="mission-image">
+          <img src="https://www.carmen-immobilier.com/wp-content/uploads/2020/08/7-29601-blog.jpg" >
+      </div>
+  </section>
 
-        <!-- Section Chiffres -->
-        <section class="stats-section">
-            <h2 class="section-title" style="color: var(--white); text-align: center;">UniColoc en chiffres</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">29K+</div>
-                    <div class="stat-label">Étudiants hébergés</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">10K+</div>
-                    <div class="stat-label">Annonces vérifiées</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">10</div>
-                    <div class="stat-label">Villes universitaires</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4.9/5</div>
-                    <div class="stat-label">Satisfaction moyenne</div>
-                </div>
-            </div>
-        </section>
+  <!-- Section Chiffres -->
+  <section class="stats-section">
+      <h2 class="section-title" style="color: var(--white); text-align: center;">Toit et Moi en chiffres</h2>
+      <div class="stats-grid">
+          <div class="stat-item">
+              <div class="stat-number">50K+</div>
+              <div class="stat-label">Biens publiés</div>
+          </div>
+          <div class="stat-item">
+              <div class="stat-number">20K+</div>
+              <div class="stat-label">Clients satisfaits</div>
+          </div>
+          <div class="stat-item">
+              <div class="stat-number">15</div>
+              <div class="stat-label">Régions couvertes</div>
+          </div>
+          <div class="stat-item">
+              <div class="stat-number">4.8/5</div>
+              <div class="stat-label">Note moyenne</div>
+          </div>
+      </div>
+  </section>
 
-        <!-- Section Notre Mission -->
-        <section class="mission-section" style="flex-direction: row-reverse;">
-            <div class="mission-content">
-                <h2 class="section-title">Notre mission :</h2>
-                <p class="section-subtitle">Simplifier la recherche de logement étudiant</p>
-                <p>Nous croyons que chaque étudiant mérite un logement sûr, abordable et bien situé pour réussir ses études. Notre plateforme élimine le stress de la recherche en connectant directement les étudiants avec des propriétaires de confiance et des colocataires compatibles.</p>
-                <p>Grâce à notre système de vérification rigoureux et nos outils de matching intelligent, nous avons réduit le temps moyen de recherche de logement de 3 mois à moins de 2 semaines.</p>
-            </div>
-            <div class="mission-image">
-                <img src="{% static 'image/heureux.png' %}" alt="Étudiants heureux dans leur colocation">
-            </div>
-        </section>
+  <!-- Section Notre Mission -->
+  <section class="mission-section" style="flex-direction: row-reverse;">
+      <div class="mission-content">
+          <h2 class="section-title">Notre mission :</h2>
+          <p class="section-subtitle">Rendre l’immobilier fluide et accessible</p>
+          <p>Chez Toit et Moi, nous croyons que la recherche ou la mise en vente d’un bien immobilier ne devrait pas être un parcours du combattant. Notre plateforme permet aux entrepreneurs de publier facilement des annonces fiables, et aux clients de trouver leur maison ou appartement idéal en toute confiance.</p>
+          <p>Avec nos outils de vérification, de planification de visites et de contrats numériques, chaque étape devient simple, rapide et sécurisée.</p>
+      </div>
+      <div class="mission-image">
+          <img src="https://static.mamanpourlavie.com/uploads/images/articles.cache/2012/02/20/file_main_image_6645_1_choisir_maison_01_6645_1500X1000_cache_640x360.jpg" >
+      </div>
+  </section>
 
-        <!-- Section Valeurs -->
-        <section class="values-section">
-            <h2 class="section-title">Nos valeurs</h2>
-            <p class="section-subtitle">Ce qui guide chacune de nos actions</p>
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-hand-holding-heart"></i></div>
-                    <h3 class="value-title">Solidarité étudiante</h3>
-                    <p>Nous favorisons l'entraide entre étudiants et créons des communautés de colocataires solidaires.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="value-title">Sécurité avant tout</h3>
-                    <p>Toutes nos annonces sont vérifiées et nos utilisateurs authentifiés pour votre tranquillité d'esprit.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-euro-sign"></i></div>
-                    <h3 class="value-title">Transparence tarifaire</h3>
-                    <p>Pas de frais cachés. Les prix affichés sont les prix réels, avec un plafonnement des commissions.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h3 class="value-title">Expertise universitaire</h3>
-                    <p>Notre équipe connaît parfaitement les spécificités de chaque campus et quartier étudiant.</p>
-                </div>
-                <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-leaf"></i></div>
-                  <h3 class="value-title">Écoresponsabilité urbaine</h3>
-                  <p>Nous encourageons des modes de vie durables en ville, en valorisant les logements économes en énergie et proches des transports en commun.</p>
+  <!-- Section Valeurs -->
+  <section class="values-section">
+      <h2 class="section-title">Nos valeurs</h2>
+      <p class="section-subtitle">Ce qui nous guide au quotidien</p>
+      <div class="values-grid">
+          <div class="value-card">
+              <div class="value-icon"><i class="fas fa-home"></i></div>
+              <h3 class="value-title">Confiance & transparence</h3>
+              <p>Des annonces vérifiées, des avis authentiques et des échanges sécurisés pour bâtir un lien de confiance durable.</p>
+          </div>
+          <div class="value-card">
+              <div class="value-icon"><i class="fas fa-cogs"></i></div>
+              <h3 class="value-title">Efficacité digitale</h3>
+              <p>Des outils modernes pour publier, rechercher, filtrer et finaliser une transaction en ligne, sans stress.</p>
+          </div>
+          <div class="value-card">
+              <div class="value-icon"><i class="fas fa-users"></i></div>
+              <h3 class="value-title">Accessibilité pour tous</h3>
+              <p>Un site pensé autant pour les professionnels de l’immobilier que pour les particuliers sans expérience.</p>
+          </div>
+          <div class="value-card">
+              <div class="value-icon"><i class="fas fa-balance-scale"></i></div>
+              <h3 class="value-title">Équité & respect</h3>
+              <p>Un espace neutre où chaque utilisateur est traité avec respect, quel que soit son budget ou son projet.</p>
+          </div>
+      </div>
+  </section>
+
+  <!-- Section Équipe -->
+  <section class="team-section">
+      <h2 class="section-title">Notre équipe</h2>
+      <p class="section-subtitle">Les bâtisseurs de Toit et Moi</p>
+      <div class="team-grid">
+          <div class="team-card">
+              <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Abdellah El Berdai" class="team-image">
+              <div class="team-info">
+                  <h4 class="team-name">Abdellah El Berdai</h4>
+                  <p class="team-position">Fondateur & Directeur général</p>
+                  <p>Passionné d'immobilier, Abdellah a imaginé une plateforme fluide où chaque entrepreneur peut valoriser ses biens.</p>
               </div>
-              <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-universal-access"></i></div>
-                  <h3 class="value-title">Accessibilité pour tous</h3>
-                  <p>Nous œuvrons pour que chaque étudiant, quel que soit son budget ou sa situation, puisse accéder à un logement digne et adapté.</p>
+          </div>
+          <div class="team-card">
+              <img src="https://randomuser.me/api/portraits/men/99.jpg" alt="Taha Akkajaj" class="team-image">
+              <div class="team-info">
+                  <h4 class="team-name">Taha Akkajaj</h4>
+                  <p class="team-position">CTO & Co-fondateur</p>
+                  <p>Taha a conçu l’architecture technologique de la plateforme, alliant performance et sécurité.</p>
               </div>
-              
-            </div>
-        </section>
+          </div>
+          <div class="team-card">
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Youssef Oullaha" class="team-image">
+              <div class="team-info">
+                  <h4 class="team-name">Youssef Oullaha</h4>
+                  <p class="team-position">Responsable Clients</p>
+                  <p>Youssef veille à ce que chaque client trouve un bien à la hauteur de ses attentes, avec accompagnement personnalisé.</p>
+              </div>
+          </div>
+          <div class="team-card">
+              <img src="https://randomuser.me/api/portraits/women/54.jpg" alt="Doha Ayad" class="team-image">
+              <div class="team-info">
+                  <h4 class="team-name">Doha Ayad</h4>
+                  <p class="team-position">Responsable Qualité</p>
+                  <p>Doha assure la vérification des annonces et la conformité des informations publiées.</p>
+              </div>
+          </div>
+      </div>
+  </section>
+  <section class="about-cta">
+      <h2 class="section-title">Vous avez un bien à vendre ou à louer ?</h2>
+      <p>Rejoignez Toit et Moi et donnez de la visibilité à vos annonces auprès de milliers de clients chaque mois.</p>
+      <div style="margin-top: var(--space-lg);">
+          <a href="{% url 'Register' %}" class="btn btn-primary" style="padding: var(--space-md) var(--space-lg);">Publier une annonce</a>
+      </div>
+  </section>
+</main>
 
-        <!-- Section Équipe -->
-        <section class="team-section">
-            <h2 class="section-title">Notre équipe</h2>
-            <p class="section-subtitle">Les passionnés derrière UniColoc</p>
-            <div class="team-grid">
-                <div class="team-card">
-                    <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Marie Dubois" class="team-image">
-                    <div class="team-info">
-                        <h4 class="team-name">Abdellah El Berdai</h4>
-                        <p class="team-position">CEO & Co-fondatrice</p>
-                        <p>Ancienne étudiante en sociologie, Abdellah a vécu 6 colocations différentes avant de créer UniColoc.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <img src="https://randomuser.me/api/portraits/men/99.jpg" alt="Thomas Martin" class="team-image">
-                    <div class="team-info">
-                        <h4 class="team-name">Taha Akkajaj</h4>
-                        <p class="team-position">CTO & Co-fondateur</p>
-                        <p>Expert en technologie, Taha a développé notre algorithme de matching des colocataires.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Sophie Lambert" class="team-image">
-                    <div class="team-info">
-                        <h4 class="team-name"> Youssef Oullaha</h4>
-                        <p class="team-position">Responsable Relations Étudiants</p>
-                        <p>Youssef organise nos événements de rencontre et veille à la satisfaction des utilisateurs.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <img src="https://randomuser.me/api/portraits/women/54.jpg" alt="Jean Petit" class="team-image">
-                    <div class="team-info">
-                        <h4 class="team-name">Doha Ayad</h4>
-                        <p class="team-position">Responsable Vérification</p>
-                        <p>Doha et son équipe vérifient chaque annonce et visitent les logements en personne.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="about-cta">
-            <h2 class="section-title">Prêt à trouver votre future colocation ?</h2>
-            <p>Rejoignez la communauté UniColoc et simplifiez votre recherche de logement étudiant.</p>
-            <div style="margin-top: var(--space-lg);">
-                <a href="{% url 'Register' %}" class="btn btn-primary" style="padding: var(--space-md) var(--space-lg);">Créer un compte gratuit</a>
-            </div>
-        </section>
-    </main>
-</body>
-</html>
 {% endblock content %}
