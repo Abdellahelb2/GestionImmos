@@ -199,25 +199,24 @@
         </li>
       {% endif %}
       <li><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</li>
-      <li><strong>CIN:</strong> {{ user.CIN }}</li>
+      <li><strong>Status:</strong> {{ user.status }}</li>
+      <li><strong>CIN:</strong> {{ user.Carteid }}</li>
       <li><strong>Email:</strong> {{ user.email }}</li>
     </ul>
   </div>
 
-  {% if user.status == 'entrepreneur' %}
+  {% if user.status == 'entrepreneur' or user.status == 'admin' %}
     <div class="profile-section">
       <ul class="profile-data">
         <li><strong>Phone:</strong> {{ user.phone_number }}</li>
         <li><strong>Birth Date:</strong> {{ user.date_of_birth }}</li>
         <li><strong>Address:</strong> {{ user.address }}</li>
-        <li>
-          <strong>Bio:</strong> <div class="bio-text">{{ user.client.bio }}</div>
-        </li>
+      
       </ul>
     </div>
   {% else %}
     <div class="no-details">
-      <p>No additional details found. Complete your profile to add more information.</p>
+      <p>No additional details found. check if you Completed your profile to add more information.</p>
     </div>
   {% endif %}
 </div>

@@ -1,800 +1,221 @@
 {% extends "base.html" %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ImmoGest - Dashboard</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #34495e;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-        }
-
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: var(--primary);
-            color: white;
-            padding: 20px 0;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-header {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .sidebar-menu {
-            margin-top: 20px;
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 5px;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .sidebar-menu a:hover, .sidebar-menu a.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left: 4px solid var(--secondary);
-        }
-
-        .sidebar-menu i {
-            margin-right: 10px;
-            font-size: 18px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .notification-icon {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-icon i {
-            font-size: 20px;
-            color: var(--dark);
-        }
-
-        .notification-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--danger);
-            color: white;
-            font-size: 10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Dashboard Cards */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .stat-info h3 {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 5px;
-        }
-
-        .stat-info .value {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-
-        .bg-blue { background-color: var(--secondary); }
-        .bg-green { background-color: var(--success); }
-        .bg-yellow { background-color: var(--warning); }
-        .bg-red { background-color: var(--danger); }
-
-        /* Charts Section */
-        .charts-section {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .chart-container {
-            min-height: 300px;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .chart-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .chart-period {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chart-period button {
-            background: none;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            color: #777;
-            font-size: 14px;
-            border-radius: 5px;
-        }
-
-        .chart-period button.active {
-            background-color: var(--secondary);
-            color: white;
-        }
-
-        /* Property List */
-        .property-list {
-            margin-bottom: 30px;
-        }
-
-        .property-list h2 {
-            margin-bottom: 15px;
-            font-size: 20px;
-            color: var(--dark);
-        }
-
-        .property-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .property-table th, .property-table td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .property-table th {
-            background-color: var(--light);
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .property-table tr {
-            border-bottom: 1px solid #eee;
-        }
-
-        .property-table tr:last-child {
-            border-bottom: none;
-        }
-
-        .property-table tr:hover {
-            background-color: rgba(236, 240, 241, 0.5);
-        }
-
-        .property-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            object-fit: cover;
-            background-color: #ddd;
-        }
-
-        .property-status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status-occupied {
-            background-color: rgba(46, 204, 113, 0.2);
-            color: var(--success);
-        }
-
-        .status-vacant {
-            background-color: rgba(231, 76, 60, 0.2);
-            color: var(--danger);
-        }
-
-        .status-maintenance {
-            background-color: rgba(243, 156, 18, 0.2);
-            color: var(--warning);
-        }
-
-        .property-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #777;
-            transition: color 0.3s;
-        }
-
-        .action-btn:hover {
-            color: var(--secondary);
-        }
-
-        /* Recent Activity */
-        .activity-list {
-            margin-top: 15px;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: white;
-        }
-
-        .activity-content {
-            flex: 1;
-        }
-
-        .activity-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .activity-time {
-            font-size: 12px;
-            color: #777;
-        }
-
-        /* Responsive */
-        @media screen and (max-width: 992px) {
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            .container {
-                position: relative;
-            }
-            
-            .sidebar {
-                position: fixed;
-                left: -250px;
-                top: 0;
-                height: 100%;
-                z-index: 100;
-            }
-            
-            .sidebar.active {
-                left: 0;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            .main-content {
-                width: 100%;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background-color: var(--secondary);
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 20px;
-                box-shadow: var(--shadow);
-                z-index: 99;
-                border: none;
-                cursor: pointer;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">ImmoGest</div>
-                <button class="menu-toggle" id="close-menu">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="#" class="active"><i class="fas fa-home"></i> Tableau de bord</a></li>
-                <li><a href="#"><i class="fas fa-building"></i> Propriétés</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Locataires</a></li>
-                <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Finances</a></li>
-                <li><a href="#"><i class="fas fa-tools"></i> Maintenance</a></li>
-                <li><a href="#"><i class="fas fa-calendar-alt"></i> Calendrier</a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i> Rapports</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h1>Tableau de bord</h1>
-                <div class="user-info">
-                    <div class="notification-icon">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-count">3</span>
-                    </div>
-                    <div class="profile">
-                        <div class="profile-img">JD</div>
-                        <span>Jean Dupont</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Cards -->
-            <div class="dashboard-cards">
-                <div class="card stat-card">
-                    <div class="stat-info">
-                        <h3>Propriétés</h3>
-                        <div class="value">24</div>
-                    </div>
-                    <div class="stat-icon bg-blue">
-                        <i class="fas fa-building"></i>
-                    </div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-info">
-                        <h3>Revenus Mensuels</h3>
-                        <div class="value">42 680 €</div>
-                    </div>
-                    <div class="stat-icon bg-green">
-                        <i class="fas fa-euro-sign"></i>
-                    </div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-info">
-                        <h3>Taux d'occupation</h3>
-                        <div class="value">87%</div>
-                    </div>
-                    <div class="stat-icon bg-yellow">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-info">
-                        <h3>Maintenance</h3>
-                        <div class="value">5</div>
-                    </div>
-                    <div class="stat-icon bg-red">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Charts Section -->
-            <div class="charts-section">
-                <div class="card chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Revenus et Dépenses</h3>
-                        <div class="chart-period">
-                            <button class="period-btn">Semaine</button>
-                            <button class="period-btn active">Mois</button>
-                            <button class="period-btn">Année</button>
-                        </div>
-                    </div>
-                 
-                </div>
-                <div class="card chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Répartition des Propriétés</h3>
-                    </div>
-                   
-                </div>
-            </div>
-
-            <!-- Property List -->
-            <div class="property-list card">
-                <h2>Propriétés Récentes</h2>
-                <table class="property-table">
-                    <thead>
-                        <tr>
-                            <th>Propriété</th>
-                            <th>Adresse</th>
-                            <th>Locataire</th>
-                            <th>Loyer</th>
-                            <th>Statut</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="property-img"></div>
-                                    <span>Appartement T3</span>
-                                </div>
-                            </td>
-                            <td>12 Rue de Paris, Lyon</td>
-                            <td>Marie Laurent</td>
-                            <td>1 200 €</td>
-                            <td><span class="property-status status-occupied">Occupé</span></td>
-                            <td>
-                                <div class="property-actions">
-                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="property-img"></div>
-                                    <span>Maison 120m²</span>
-                                </div>
-                            </td>
-                            <td>5 Avenue des Fleurs, Nice</td>
-                            <td>Thomas Petit</td>
-                            <td>1 800 €</td>
-                            <td><span class="property-status status-occupied">Occupé</span></td>
-                            <td>
-                                <div class="property-actions">
-                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="property-img"></div>
-                                    <span>Studio 30m²</span>
-                                </div>
-                            </td>
-                            <td>8 Rue du Commerce, Paris</td>
-                            <td>-</td>
-                            <td>850 €</td>
-                            <td><span class="property-status status-vacant">Vacant</span></td>
-                            <td>
-                                <div class="property-actions">
-                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="property-img"></div>
-                                    <span>Local Commercial</span>
-                                </div>
-                            </td>
-                            <td>23 Boulevard Central, Marseille</td>
-                            <td>Sophie Martin</td>
-                            <td>2 500 €</td>
-                            <td><span class="property-status status-maintenance">En travaux</span></td>
-                            <td>
-                                <div class="property-actions">
-                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="card">
-                <div class="chart-header">
-                    <h3 class="chart-title">Activités Récentes</h3>
-                </div>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon bg-green">
-                            <i class="fas fa-euro-sign"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Paiement de loyer reçu</div>
-                            <div class="activity-description">Marie Laurent a payé son loyer de 1 200 €</div>
-                            <div class="activity-time">Il y a 2 heures</div>
-                        </div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon bg-blue">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Nouveau locataire</div>
-                            <div class="activity-description">Pierre Lefebvre a signé un bail pour l'appartement T2</div>
-                            <div class="activity-time">Hier à 14:30</div>
-                        </div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon bg-red">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Alerte Maintenance</div>
-                            <div class="activity-description">Problème de plomberie signalé au 8 Rue du Commerce</div>
-                            <div class="activity-time">Il y a 2 jours</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<style>
+/* Variables de couleurs */
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #10b981;
+  --accent-color: #f43f5e;
+  --success-color: #3b82f6;
+  --dark-color: #111827;
+  --darker-color: #030712;
+  --light-color: #f9fafb;
+  --light-gray: #f3f4f6;
+  --medium-gray: #9ca3af;
+  --dark-gray: #4b5563;
+  --text-color: #1f2937;
+  --light-text: #ffffff;
+}
+
+/* Style général de la page */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+}
+
+/* Titres */
+h1 {
+  color: var(--primary-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--primary-light);
+}
+
+h2 {
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  margin-top: 35px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+/* Tableau des utilisateurs */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background-color: var(--light-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.data-table th {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: var(--light-gray);
+}
+
+.data-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover {
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+/* Statut des utilisateurs */
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+}
+
+.status-inactive {
+  background-color: var(--medium-gray);
+  color: var(--light-text);
+}
+
+.status-pending {
+  background-color: var(--accent-color);
+  color: var(--light-text);
+}
+
+/* Listes */
+.data-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: var(--light-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.data-list li {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--light-gray);
+  display: flex;
+  align-items: center;
+}
+
+.data-list li:last-child {
+  border-bottom: none;
+}
+
+.data-list li:hover {
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+.data-list .empty-list {
+  color: var(--medium-gray);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Séparateur de sections */
+.section-divider {
+  height: 1px;
+  background-color: var(--light-gray);
+  margin: 30px 0;
+}
+
+/* Badge d'entreprise */
+.company-badge {
+  background-color: var(--primary-light);
+  color: var(--light-text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+</style>
+
+<div class="admin-container">
+  <h1>🛠️ Admin Dashboard</h1>
+
+  <h2>📋 Tous les utilisateurs</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom d'utilisateur</th>
+        <th>Email</th>
+        <th>Statut</th>
+        <th>Inscrit le</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          {% if user.status == "active" %}
+            <span class="status-badge status-active">Actif</span>
+          {% elif user.status == "inactive" %}
+            <span class="status-badge status-inactive">Inactif</span>
+          {% else %}
+            <span class="status-badge status-pending">En attente</span>
+          {% endif %}
+        </td>
+        <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+    <div class="section-divider"></div>
+
+    <h2>👨‍💼 Entrepreneurs</h2>
+    <ul class="data-list">
+        {% for e in entrepreneurs %}
+        <li>{{ e.user.username }} <span class="company-badge">{{ e.entreprise }}</span></li>
+        {% empty %}
+        <li class="empty-list">Aucun entrepreneur</li>
+        {% endfor %}
+    </ul>
+
+    <div class="section-divider"></div>
+
+    <h2>🙋 Clients</h2>
+    <ul class="data-list">
+        {% for c in clients %}
+        <li>{{ c.user.username }}</li>
+        {% empty %}
+        <li class="empty-list">Aucun client</li>
+        {% endfor %}
+    </ul>
     </div>
-
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" id="mobile-menu">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script>
-        // Menu Toggle
-        document.getElementById('mobile-menu').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('active');
-        });
-
-        document.getElementById('close-menu').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('active');
-        });
-
-        // Charts
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const propertyCtx = document.getElementById('propertyChart').getContext('2d');
-
-        // Revenue Chart
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
-                datasets: [
-                    {
-                        label: 'Revenus',
-                        data: [42500, 43200, 43800, 42680, 44000, 43500, 45000, 44800, 46000, 45500, 47000, 46500],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    },
-                    {
-                        label: 'Dépenses',
-                        data: [12500, 13200, 14800, 13680, 15000, 14500, 15200, 14800, 15500, 16000, 15800, 16500],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString() + ' €';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Property Distribution Chart
-        const propertyChart = new Chart(propertyCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Appartements', 'Maisons', 'Commerces', 'Bureaux'],
-                datasets: [{
-                    data: [14, 6, 3, 1],
-                    backgroundColor: [
-                        '#3498db',
-                        '#2ecc71',
-                        '#f39c12',
-                        '#9b59b6'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Period Buttons
-        const periodBtns = document.querySelectorAll('.period-btn');
-        periodBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                periodBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Here you would typically update the chart data based on the selected period
-                // For demonstration purposes, we'll just randomize the data
-                if (this.textContent === 'Semaine') {
-                    revenueChart.data.labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-                    revenueChart.data.datasets[0].data = [9800, 10200, 9500, 11000, 10500, 9800, 10000];
-                    revenueChart.data.datasets[1].data = [3500, 3200, 3800, 4000, 3500, 2800, 3000];
-                } else if (this.textContent === 'Mois') {
-                    revenueChart.data.labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-                    revenueChart.data.datasets[0].data = [42500, 43200, 43800, 42680, 44000, 43500, 45000, 44800, 46000, 45500, 47000, 46500];
-                    revenueChart.data.datasets[1].data = [12500, 13200, 14800, 13680, 15000, 14500, 15200, 14800, 15500, 16000, 15800, 16500];
-                } else if (this.textContent === 'Année') {
-                    revenueChart.data.labels = ['2020', '2021', '2022', '2023', '2024', '2025'];
-                    revenueChart.data.datasets[0].data = [480000, 510000, 525000, 540000, 570000, 530000];
-                    revenueChart.data.datasets[1].data = [150000, 165000, 180000, 175000, 190000, 185000];
-                }
-                
-                revenueChart.update();
-            });
-        });
-    </script>
-</body>
-</html>
-
 {% endblock content %}

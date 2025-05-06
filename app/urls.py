@@ -19,8 +19,9 @@ urlpatterns = [
     path('modify-profile/', views.modify_profile, name='modify_profile'),
     path('profile/', views.profile, name='profile'),
     path('dash/', views.dash, name='Dashboard'),
-    
-    
+    path('messaging/<int:bien_id>/<int:recipient_id>/', views.conversation, name='conversation'),
+    path('inbox/', views.inbox, name='inbox'),
+
 
 ]
 

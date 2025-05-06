@@ -2,1008 +2,1008 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <style>
-:root {
-  /* Palette de couleurs */
-  --primary-color: #4361ee;
-  --primary-dark: #3a0ca3;
-  --secondary-color: #3f37c9;
-  --accent-color: #f72585;
-  --dark-color: #1a1a2e;
-  --light-color: #f8f9fa;
-  --light-gray: #e9ecef;
-  --medium-gray: #adb5bd;
-  --white: #ffffff;
-  .modern-pricing {
-    padding: 5rem 2rem;
-    background: linear-gradient(to bottom, #f9fafc 0%, #ffffff 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.modern-pricing::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(90deg, #4361ee, #3a0ca3, #7209b7);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    background: linear-gradient(90deg, #3a0ca3, #4361ee);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.highlight {
-    position: relative;
-    display: inline-block;
-}
-
-.highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: rgba(67, 97, 238, 0.2);
-    z-index: -1;
-    border-radius: 20px;
-}
-
-.pricing-cards-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.pricing-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    max-width: 360px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-    border: 1px solid #eef2f6;
-}
-
-.pricing-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(67, 97, 238, 0.15);
-}
-
-.card-badge {
-    position: absolute;
-    top: 20px;
-    right: -30px;
-    background: #4361ee;
-    color: white;
-    padding: 0.25rem 2rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transform: rotate(45deg);
-    width: 120px;
-    text-align: center;
-}
-
-.card-badge.popular {
-    background: #f72585;
-}
-
-.card-content {
-    padding: 2.5rem 2rem 1.5rem;
-}
-
-.card-header {
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.card-header h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 0.5rem;
-}
-
-.price-container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.price {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #3a0ca3;
-    line-height: 1;
-}
-
-.premium-card .price {
-    color: #f72585;
-}
-
-.period {
-    font-size: 1rem;
-    color: #64748b;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.features {
-    margin: 2rem 0;
-    padding: 0;
-    list-style: none;
-}
-
-.features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
-.features i {
-    font-size: 1.1rem;
-    margin-top: 2px;
-}
-
-.fa-check-circle {
-    color: #4361ee;
-}
-
-.premium-card .fa-check-circle {
-    color: #f72585;
-}
-
-.inactive {
-    opacity: 0.6;
-}
-
-.fa-times-circle {
-    color: #94a3b8;
-}
-
-.cta-button {
-    display: block;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s;
-    margin-top: 1.5rem;
-}
-
-.cta-button.solid {
-    background: #4361ee;
-    color: white;
-    border: 2px solid #4361ee;
-}
-
-.cta-button.solid:hover {
-    background: #3a0ca3;
-    border-color: #3a0ca3;
-}
-
-.premium-card .cta-button.solid {
-    background: #f72585;
-    border-color: #f72585;
-}
-
-.premium-card .cta-button.solid:hover {
-    background: #b5174e;
-    border-color: #b5174e;
-}
-
-.cta-button.outline {
-    border: 2px solid #4361ee;
-    color: #4361ee;
-    background: white;
-}
-
-.cta-button.outline:hover {
-    background: #f8fafc;
-}
-
-.card-footer {
-    padding: 1rem;
-    text-align: center;
-    background: #f8fafc;
-    border-top: 1px solid #eef2f6;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-.security-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 3rem;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-.security-badge i {
-    color: #4361ee;
-}
-
-/* Animation */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-}
-
-.premium-card {
-    animation: float 4s ease-in-out infinite;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .pricing-cards-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .pricing-card {
-        max-width: 400px;
-    }
-}
-
-@media (max-width: 480px) {
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .price {
-        font-size: 2.5rem;
-    }
-}
-  /* Espacements */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
-  
-  /* Effets */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.6;
-  color: var(--dark-color);
-  background-color: var(--light-color);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-/* Hero Services */
-.services-hero {
-  text-align: center;
-  padding: var(--space-xl) 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: var(--white);
-  margin-bottom: var(--space-xl);
-  border-radius: var(--radius-lg);
-}
-
-.services-hero h1 {
-  font-size: 2.8rem;
-  margin-bottom: var(--space-md);
-}
-
-.services-hero p {
-  max-width: 700px;
-  margin: 0 auto;
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-/* Services Grid */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-lg);
-  margin: var(--space-xl) 0;
-}
-
-.service-card {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.3s, box-shadow 0.3s;
-  border-top: 4px solid var(--primary-color);
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-.service-icon {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin: var(--space-md) 0;
-  text-align: center;
-}
-
-.service-content {
-  padding: var(--space-md);
-  text-align: center;
-}
-
-.service-content h3 {
-  font-size: 1.5rem;
-  margin-bottom: var(--space-sm);
-}
-
-.service-content p {
-  color: var(--medium-gray);
-  margin-bottom: var(--space-md);
-}
-
-.service-btn {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-md);
-  background: var(--primary-color);
-  color: var(--white);
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  transition: background 0.3s;
-  text-decoration: none;
-}
-
-.service-btn:hover {
-  background: var(--primary-dark);
-}
-
-/* Process Section */
-.process-section {
-  background: var(--white);
-  padding: var(--space-xl) 0;
-  margin: var(--space-xl) 0;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.process-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-top: var(--space-xl);
-  position: relative;
-}
-
-.process-steps::before {
-  content: '';
-  position: absolute;
-  top: 40px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--light-gray);
-  z-index: 1;
-}
-
-.process-step {
-  flex: 1;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.step-number {
-  width: 80px;
-  height: 80px;
-  background: var(--primary-color);
-  color: var(--white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin: 0 auto var(--space-md);
-  border: 5px solid var(--white);
-}
-
-.process-step h4 {
-  font-size: 1.2rem;
-  margin-bottom: var(--space-sm);
-}
-
-.process-step p {
-  color: var(--medium-gray);
-  font-size: 0.9rem;
-  max-width: 250px;
-  margin: 0 auto;
-}
-
-/* Nouvelle section Pricing */
-.pricing-section {
-  margin: var(--space-xl) 0;
-  text-align: center;
-}
-
-.pricing-header {
-  margin-bottom: var(--space-xl);
-}
-
-.pricing-cards {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-lg);
-  flex-wrap: wrap;
-}
-
-.pricing-card {
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  width: 320px;
-  position: relative;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--light-gray);
-}
-
-.pricing-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-xl);
-}
-
-.pricing-card.popular {
-  border: 2px solid var(--primary-color);
-  transform: scale(1.05);
-}
-
-.pricing-card.popular::before {
-  content: 'CHOIX POPULAIRE';
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--primary-color);
-  color: white;
-  padding: var(--space-xs) var(--space-md);
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.pricing-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: var(--space-md);
-  color: var(--dark-color);
-}
-
-.price {
-  font-size: 3rem;
-  font-weight: 700;
-  margin: var(--space-md) 0;
-  color: var(--primary-color);
-  position: relative;
-  display: inline-block;
-}
-
-.price .currency {
-  font-size: 1.5rem;
-  vertical-align: super;
-  margin-right: 2px;
-}
-
-.price .period {
-  font-size: 1rem;
-  color: var(--medium-gray);
-  font-weight: normal;
-}
-
-.pricing-features {
-  list-style: none;
-  margin: var(--space-lg) 0;
-  text-align: left;
-}
-
-.pricing-features li {
-  padding: var(--space-xs) 0;
-  display: flex;
-  align-items: center;
-}
-
-.pricing-features i {
-  margin-right: var(--space-xs);
-  color: var(--primary-color);
-  width: 20px;
-  text-align: center;
-}
-
-.pricing-features .not-included {
-  color: var(--medium-gray);
-  opacity: 0.6;
-}
-
-.pricing-features .not-included i {
-  color: var(--medium-gray);
-}
-
-.pricing-btn {
-  display: inline-block;
-  width: 100%;
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.pricing-btn.primary {
-  background: var(--primary-color);
-  color: white;
-  border: 2px solid var(--primary-color);
-}
-
-.pricing-btn.primary:hover {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
-}
-
-.pricing-btn.secondary {
-  background: white;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-}
-
-.pricing-btn.secondary:hover {
-  background: var(--light-gray);
-}
-
-/* FAQ Section */
-.faq-section {
-  margin: var(--space-xl) 0;
-}
-
-.faq-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.faq-item {
-  background: var(--white);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-sm);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
-.faq-question {
-  padding: var(--space-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-weight: 500;
-}
-.white{
-    color: white;
-}
-.faq-question:hover {
-  background: var(--light-color);
-}
-
-.faq-answer {
-  padding: 0 var(--space-md);
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s, padding 0.3s;
-}
-
-.faq-answer.active {
-  padding: 0 var(--space-md) var(--space-md);
-  max-height: 500px;
-}
-
-.faq-toggle {
-  transition: transform 0.3s;
-}
-
-.faq-toggle.active {
-  transform: rotate(180deg);
-}
-
-/* CTA Section */
-.services-cta {
-  text-align: center;
-  padding: var(--space-xl) 0;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-  color: var(--white);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--space-xl);
-}
-
-.btn-cta {
-  display: inline-block;
-  padding: var(--space-md) var(--space-lg);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.btn-cta-primary {
-  background: var(--white);
-  color: var(--primary-color);
-}
-
-.btn-cta-primary:hover {
-  background: var(--light-gray);
-  transform: translateY(-2px);
-}
-
-.btn-cta-outline {
-  border: 2px solid var(--white);
-  color: var(--white);
-}
-
-.btn-cta-outline:hover {
-  background: rgba(255,255,255,0.1);
-  transform: translateY(-2px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .services-hero h1 {
-    font-size: 2.2rem;
+  <!DOCTYPE html>
+  <html lang="fr">
+  <head>
+      <style>
+  :root {
+    /* Palette de couleurs */
+    --primary-color: #4361ee;
+    --primary-dark: #3a0ca3;
+    --secondary-color: #3f37c9;
+    --accent-color: #f72585;
+    --dark-color: #1a1a2e;
+    --light-color: #f8f9fa;
+    --light-gray: #e9ecef;
+    --medium-gray: #adb5bd;
+    --white: #ffffff;
+    .modern-pricing {
+      padding: 5rem 2rem;
+      background: linear-gradient(to bottom, #f9fafc 0%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
   }
-  
-  .process-steps {
-    flex-direction: column;
-    gap: var(--space-xl);
+
+  .modern-pricing::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, #4361ee, #3a0ca3, #7209b7);
   }
-  
-  .process-steps::before {
-    display: none;
+
+  .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
   }
-  
-  .step-number {
-    margin-bottom: var(--space-sm);
+
+  .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #3a0ca3, #4361ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+  }
+
+  .highlight {
+      position: relative;
+      display: inline-block;
+  }
+
+  .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: rgba(67, 97, 238, 0.2);
+      z-index: -1;
+      border-radius: 20px;
+  }
+
+  .pricing-cards-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
   }
 
   .pricing-card {
-    width: 100%;
-    max-width: 400px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 360px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      border: 1px solid #eef2f6;
   }
 
-  .pricing-card.popular {
-    transform: scale(1);
+  .pricing-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(67, 97, 238, 0.15);
   }
-}
 
-@media (max-width: 480px) {
-  .services-hero {
-    padding: var(--space-lg) 0;
+  .card-badge {
+      position: absolute;
+      top: 20px;
+      right: -30px;
+      background: #4361ee;
+      color: white;
+      padding: 0.25rem 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+      width: 120px;
+      text-align: center;
   }
-  
-  .services-hero h1 {
-    font-size: 2rem;
+
+  .card-badge.popular {
+      background: #f72585;
+  }
+
+  .card-content {
+      padding: 2.5rem 2rem 1.5rem;
+  }
+
+  .card-header {
+      margin-bottom: 2rem;
+      text-align: center;
+  }
+
+  .card-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+  }
+
+  .price-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0.5rem;
   }
 
   .price {
-    font-size: 2.5rem;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #3a0ca3;
+      line-height: 1;
   }
-}
-    </style>
-</head>
-<body>
+
+  .premium-card .price {
+      color: #f72585;
+  }
+
+  .period {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+  }
+
+  .features {
+      margin: 2rem 0;
+      padding: 0;
+      list-style: none;
+  }
+
+  .features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+  }
+
+  .features i {
+      font-size: 1.1rem;
+      margin-top: 2px;
+  }
+
+  .fa-check-circle {
+      color: #4361ee;
+  }
+
+  .premium-card .fa-check-circle {
+      color: #f72585;
+  }
+
+  .inactive {
+      opacity: 0.6;
+  }
+
+  .fa-times-circle {
+      color: #94a3b8;
+  }
+
+  .cta-button {
+      display: block;
+      text-align: center;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      margin-top: 1.5rem;
+  }
+
+  .cta-button.solid {
+      background: #4361ee;
+      color: white;
+      border: 2px solid #4361ee;
+  }
+
+  .cta-button.solid:hover {
+      background: #3a0ca3;
+      border-color: #3a0ca3;
+  }
+
+  .premium-card .cta-button.solid {
+      background: #f72585;
+      border-color: #f72585;
+  }
+
+  .premium-card .cta-button.solid:hover {
+      background: #b5174e;
+      border-color: #b5174e;
+  }
+
+  .cta-button.outline {
+      border: 2px solid #4361ee;
+      color: #4361ee;
+      background: white;
+  }
+
+  .cta-button.outline:hover {
+      background: #f8fafc;
+  }
+
+  .card-footer {
+      padding: 1rem;
+      text-align: center;
+      background: #f8fafc;
+      border-top: 1px solid #eef2f6;
+      font-size: 0.9rem;
+      color: #64748b;
+  }
+
+  .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #64748b;
+  }
+
+  .security-badge i {
+      color: #4361ee;
+  }
+
+  /* Animation */
+  @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+  }
+
+  .premium-card {
+      animation: float 4s ease-in-out infinite;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+      .pricing-cards-container {
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      .pricing-card {
+          max-width: 400px;
+      }
+  }
+
+  @media (max-width: 480px) {
+      .section-title {
+          font-size: 2rem;
+      }
+      
+      .price {
+          font-size: 2.5rem;
+      }
+  }
+    /* Espacements */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
     
+    /* Effets */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
 
- <!-- Contenu principal -->
-<main class="container">
-  <!-- Hero Services -->
-  <section class="services-hero">
-      <h1 class="white">Nos services pour simplifier vos projets immobiliers</h1>
-      <p class="white">Découvrez comment Toit et Moi facilite la gestion et la recherche de biens immobiliers à louer ou à acheter</p>
-  </section>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-  <!-- Services Grid -->
-  <section>
-      <h2 class="section-title" style="text-align: center;">Solutions pour professionnels et particuliers</h2>
-      <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-xl);">Nous accompagnons vendeurs, investisseurs et locataires à chaque étape</p>
+  body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+  }
 
-      <div class="services-grid">
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-search"></i></div>
-              <div class="service-content">
-                  <h3>Recherche personnalisée</h3>
-                  <p>Notre moteur de recherche intelligent vous propose des logements adaptés à votre budget, localisation et critères spécifiques.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
-              <div class="service-content">
-                  <h3>Vérification des annonces</h3>
-                  <p>Toutes nos annonces sont vérifiées par notre équipe pour garantir leur authenticité et votre sécurité.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-users"></i></div>
-              <div class="service-content">
-                  <h3>Matching de colocataires</h3>
-                  <p>Notre algorithme vous propose des colocataires compatibles selon votre profil et mode de vie.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-file-signature"></i></div>
-              <div class="service-content">
-                  <h3>Contrats en ligne</h3>
-                  <p>Générez et signez vos contrats de colocation en ligne, en toute conformité avec la législation.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-euro-sign"></i></div>
-              <div class="service-content">
-                  <h3>Garantie locative</h3>
-                  <p>Solution de garantie pour les étudiants sans garant personnel, acceptée par la plupart des propriétaires.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-          <div class="service-card">
-              <div class="service-icon"><i class="fas fa-headset"></i></div>
-              <div class="service-content">
-                  <h3>Support premium</h3>
-                  <p>Notre équipe vous accompagne 7j/7 pour toutes vos questions et démarches administratives.</p>
-                  <a href="#" class="service-btn">En savoir plus</a>
-              </div>
-          </div>
-      </div>
-  </section>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+  }
 
-  <!-- Process Section -->
-  <section class="process-section">
-      <h2 class="section-title" style="text-align: center;">Comment ça marche ?</h2>
-      <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto;">Trouvez votre logement idéal en seulement 4 étapes</p>
+  /* Hero Services */
+  .services-hero {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    margin-bottom: var(--space-xl);
+    border-radius: var(--radius-lg);
+  }
 
-      <div class="process-steps">
-          <div class="process-step">
-              <div class="step-number">1</div>
-              <h4>Créez votre profil</h4>
-              <p>Décrivez vos critères de recherche et votre profil en 2 minutes</p>
-          </div>
-          <div class="process-step">
-              <div class="step-number">2</div>
-              <h4>Recevez des propositions</h4>
-              <p>Nos algorithmes vous proposent les logements et colocataires les plus adaptés</p>
-          </div>
-          <div class="process-step">
-              <div class="step-number">3</div>
-              <h4>Visitez et choisissez</h4>
-              <p>Organisez des visites virtuelles ou physiques de vos sélections</p>
-          </div>
-          <div class="process-step">
-              <div class="step-number">4</div>
-              <h4>Finalisez en ligne</h4>
-              <p>Signez votre contrat et réglez en toute sécurité sur notre plateforme</p>
-          </div>
-      </div>
-  </section>
+  .services-hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: var(--space-md);
+  }
 
-  <!-- Pricing Section -->
-  <section class="modern-pricing">
-      <div class="section-header">
-          <h2 class="section-title">Trouvez <span class="highlight">votre formule</span> idéale</h2>
-          <p class="section-subtitle">Accédez à des fonctionnalités sur mesure pour simplifier votre recherche</p>
-      </div>
+  .services-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
 
-      <div class="pricing-cards-container">
-          <div class="pricing-card student-card">
-              <div class="card-badge">Pour étudiants</div>
-              <div class="card-content">
-                  <div class="card-header">
-                      <h3>Découverte</h3>
-                      <div class="price-container">
-                          <span class="price">0€</span>
-                          <span class="period">/toujours gratuit</span>
-                      </div>
-                  </div>
-                  <ul class="features">
-                      <li><i class="fas fa-check-circle"></i> Accès aux annonces vérifiées</li>
-                      <li><i class="fas fa-check-circle"></i> 5 contacts par mois</li>
-                      <li><i class="fas fa-check-circle"></i> Alertes personnalisées</li>
-                      <li class="inactive"><i class="fas fa-times-circle"></i> Matching intelligent</li>
-                  </ul>
-                  <a href="{% url 'Register' %}" class="cta-button outline">Commencer</a>
-              </div>
-              <div class="card-footer">
-                  <p>Parfait pour une première recherche</p>
-              </div>
-          </div>
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
+  }
 
-          <div class="pricing-card premium-card">
-              <div class="card-badge popular">LE PLUS CHOISI</div>
-              <div class="card-content">
-                  <div class="card-header">
-                      <h3>Premium</h3>
-                      <div class="price-container">
-                          <span class="price">9€</span>
-                          <span class="period">/mois</span>
-                      </div>
-                  </div>
-                  <ul class="features">
-                      <li><i class="fas fa-check-circle"></i> Contacts illimités</li>
-                      <li><i class="fas fa-check-circle"></i> Matching personnalisé</li>
-                      <li><i class="fas fa-check-circle"></i> Contrats en ligne</li>
-                      <li><i class="fas fa-check-circle"></i> Support prioritaire 24/7</li>
-                  </ul>
-                  <a href="{% url 'Register' %}" class="cta-button solid">Essai gratuit 7 jours</a>
-              </div>
-              <div class="card-footer">
-                  <p>30 jours satisfait ou remboursé</p>
-              </div>
-          </div>
+  .service-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 4px solid var(--primary-color);
+  }
 
-          <div class="pricing-card owner-card">
-              <div class="card-badge">Pour propriétaires</div>
-              <div class="card-content">
-                  <div class="card-header">
-                      <h3>Professionnel</h3>
-                      <div class="price-container">
-                          <span class="price">3%</span>
-                          <span class="period">par location</span>
-                      </div>
-                  </div>
-                  <ul class="features">
-                      <li><i class="fas fa-check-circle"></i> Annonces mises en avant</li>
-                      <li><i class="fas fa-check-circle"></i> Vérification des locataires</li>
-                      <li><i class="fas fa-check-circle"></i> Gestion des contrats</li>
-                      <li><i class="fas fa-check-circle"></i> Assistance juridique</li>
-                  </ul>
-                  <a href="{% url 'Products' %}" class="cta-button outline">Publier une annonce</a>
-              </div>
-              <div class="card-footer">
-                  <p>Solution clé en main</p>
-              </div>
-          </div>
-      </div>
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
 
-      <div class="security-badge">
-          <i class="fas fa-lock"></i>
-          <span>Paiements 100% sécurisés - Sans engagement</span>
-      </div>
-  </section>
+  .service-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin: var(--space-md) 0;
+    text-align: center;
+  }
 
-  <!-- FAQ Section -->
-  <section class="faq-section">
-      <h2 class="section-title" style="text-align: center;">Questions fréquentes</h2>
-      <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-xl);">Trouvez des réponses à vos questions</p>
+  .service-content {
+    padding: var(--space-md);
+    text-align: center;
+  }
 
-      <div class="faq-container">
-          <div class="faq-item">
-              <div class="faq-question">
-                  <span>Comment UniColoc vérifie-t-il les annonces ?</span>
-                  <i class="fas fa-chevron-down faq-toggle"></i>
-              </div>
-              <div class="faq-answer">
-                  <p>Notre équipe visite physiquement une sélection d'annonces et vérifie systématiquement les documents des propriétaires (titre de propriété, taxe foncière)...</p>
-              </div>
-          </div>
-          <div class="faq-item">
-              <div class="faq-question">
-                  <span>Quelle est la différence entre les offres gratuite et premium ?</span>
-                  <i class="fas fa-chevron-down faq-toggle"></i>
-              </div>
-              <div class="faq-answer">
-                  <p>L'offre gratuite permet d'accéder à l'ensemble des annonces et d'effectuer jusqu'à 5 contacts par mois. L'offre premium offre des contacts illimités...</p>
-              </div>
-          </div>
-          <div class="faq-item">
-              <div class="faq-question">
-                  <span>Comment fonctionne la garantie locative ?</span>
-                  <i class="fas fa-chevron-down faq-toggle"></i>
-              </div>
-              <div class="faq-answer">
-                  <p>Notre partenaire financier se porte garant pour vous moyennant une commission unique de 2% du loyer annuel...</p>
-              </div>
-          </div>
-          <div class="faq-item">
-              <div class="faq-question">
-                  <span>Puis-je résilier mon abonnement premium à tout moment ?</span>
-                  <i class="fas fa-chevron-down faq-toggle"></i>
-              </div>
-              <div class="faq-answer">
-                  <p>Oui, vous pouvez résilier votre abonnement premium à tout moment depuis votre espace personnel...</p>
-              </div>
-          </div>
-          <div class="faq-item">
-              <div class="faq-question">
-                  <span>Comment sont sélectionnés les colocataires proposés ?</span>
-                  <i class="fas fa-chevron-down faq-toggle"></i>
-              </div>
-              <div class="faq-answer">
-                  <p>Notre algorithme analyse plus de 20 critères pour vous proposer les colocataires les plus compatibles...</p>
-              </div>
-          </div>
-      </div>
-  </section>
-</main>
+  .service-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+  }
 
+  .service-content p {
+    color: var(--medium-gray);
+    margin-bottom: var(--space-md);
+  }
 
-        <!-- CTA Section -->
-        <section class="services-cta">
-            <h2 class="white" style="font-size: 2rem; margin-bottom: var(--space-md);">Prêt à trouver votre logement idéal ?</h2>
-            <p class="white" style="font-size: 1.2rem; margin-bottom: var(--space-lg); max-width: 600px; margin-left: auto; margin-right: auto;">Rejoignez des milliers d'étudiants satisfaits</p>
-            <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
-              {% if user.is_authenticated %}
-              <a href="{% url 'Products' %}" class="btn-cta btn-cta-primary">Voir les annonces Maintenant</a>
-              {% else %}
-                <a href="{% url 'Register' %}" class="btn-cta btn-cta-primary">S'inscrire gratuitement</a>
-                <a href="{% url 'Contact' %}" class="btn-cta btn-cta-outline">Nous contacter</a>
-                {% endif %}
+  .service-btn {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.3s;
+    text-decoration: none;
+  }
+
+  .service-btn:hover {
+    background: var(--primary-dark);
+  }
+
+  /* Process Section */
+  .process-section {
+    background: var(--white);
+    padding: var(--space-xl) 0;
+    margin: var(--space-xl) 0;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .process-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-xl);
+    position: relative;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--light-gray);
+    z-index: 1;
+  }
+
+  .process-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .step-number {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 auto var(--space-md);
+    border: 5px solid var(--white);
+  }
+
+  .process-step h4 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .process-step p {
+    color: var(--medium-gray);
+    font-size: 0.9rem;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  /* Nouvelle section Pricing */
+  .pricing-section {
+    margin: var(--space-xl) 0;
+    text-align: center;
+  }
+
+  .pricing-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .pricing-cards {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .pricing-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    width: 320px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--light-gray);
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .pricing-card.popular {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+  }
+
+  .pricing-card.popular::before {
+    content: 'CHOIX POPULAIRE';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .pricing-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+    color: var(--dark-color);
+  }
+
+  .price {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: var(--space-md) 0;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+  }
+
+  .price .currency {
+    font-size: 1.5rem;
+    vertical-align: super;
+    margin-right: 2px;
+  }
+
+  .price .period {
+    font-size: 1rem;
+    color: var(--medium-gray);
+    font-weight: normal;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin: var(--space-lg) 0;
+    text-align: left;
+  }
+
+  .pricing-features li {
+    padding: var(--space-xs) 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .pricing-features i {
+    margin-right: var(--space-xs);
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+  }
+
+  .pricing-features .not-included {
+    color: var(--medium-gray);
+    opacity: 0.6;
+  }
+
+  .pricing-features .not-included i {
+    color: var(--medium-gray);
+  }
+
+  .pricing-btn {
+    display: inline-block;
+    width: 100%;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .pricing-btn.primary {
+    background: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+  }
+
+  .pricing-btn.primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+  }
+
+  .pricing-btn.secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+  }
+
+  .pricing-btn.secondary:hover {
+    background: var(--light-gray);
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    margin: var(--space-xl) 0;
+  }
+
+  .faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-sm);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    padding: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .white{
+      color: white;
+  }
+  .faq-question:hover {
+    background: var(--light-color);
+  }
+
+  .faq-answer {
+    padding: 0 var(--space-md);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+  }
+
+  .faq-answer.active {
+    padding: 0 var(--space-md) var(--space-md);
+    max-height: 500px;
+  }
+
+  .faq-toggle {
+    transition: transform 0.3s;
+  }
+
+  .faq-toggle.active {
+    transform: rotate(180deg);
+  }
+
+  /* CTA Section */
+  .services-cta {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .btn-cta {
+    display: inline-block;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cta-primary {
+    background: var(--white);
+    color: var(--primary-color);
+  }
+
+  .btn-cta-primary:hover {
+    background: var(--light-gray);
+    transform: translateY(-2px);
+  }
+
+  .btn-cta-outline {
+    border: 2px solid var(--white);
+    color: var(--white);
+  }
+
+  .btn-cta-outline:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .services-hero h1 {
+      font-size: 2.2rem;
+    }
+    
+    .process-steps {
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+    
+    .process-steps::before {
+      display: none;
+    }
+    
+    .step-number {
+      margin-bottom: var(--space-sm);
+    }
+
+    .pricing-card {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .pricing-card.popular {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .services-hero {
+      padding: var(--space-lg) 0;
+    }
+    
+    .services-hero h1 {
+      font-size: 2rem;
+    }
+
+    .price {
+      font-size: 2.5rem;
+    }
+  }
+      </style>
+  </head>
+  <body>
+      
+
+  <!-- Contenu principal -->
+  <main class="container">
+    <!-- Hero Services -->
+    <section class="services-hero">
+        <h1 class="white">Nos services pour simplifier vos projets immobiliers</h1>
+        <p class="white">Découvrez comment Toit et Moi facilite la gestion et la recherche de biens immobiliers à louer ou à acheter</p>
+    </section>
+
+    <!-- Services Grid -->
+    <section>
+        <h2 class="section-title" style="text-align: center;">Solutions pour professionnels et particuliers</h2>
+        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-xl);">Nous accompagnons vendeurs, investisseurs et locataires à chaque étape</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-search"></i></div>
+                <div class="service-content">
+                    <h3>Recherche personnalisée</h3>
+                    <p>Notre moteur de recherche intelligent vous propose des logements adaptés à votre budget, localisation et critères spécifiques.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
             </div>
-        </section>
-    </main>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="service-content">
+                    <h3>Vérification des annonces</h3>
+                    <p>Toutes nos annonces sont vérifiées par notre équipe pour garantir leur authenticité et votre sécurité.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-users"></i></div>
+                <div class="service-content">
+                    <h3>Matching de colocataires</h3>
+                    <p>Notre algorithme vous propose des colocataires compatibles selon votre profil et mode de vie.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+                <div class="service-content">
+                    <h3>Contrats en ligne</h3>
+                    <p>Générez et signez vos contrats de colocation en ligne, en toute conformité avec la législation.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-euro-sign"></i></div>
+                <div class="service-content">
+                    <h3>Garantie locative</h3>
+                    <p>Solution de garantie pour les étudiants sans garant personnel, acceptée par la plupart des propriétaires.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                <div class="service-content">
+                    <h3>Support premium</h3>
+                    <p>Notre équipe vous accompagne 7j/7 pour toutes vos questions et démarches administratives.</p>
+                    <a href="#" class="service-btn">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        // FAQ Toggle
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const toggle = question.querySelector('.faq-toggle');
-                
-                answer.classList.toggle('active');
-                toggle.classList.toggle('active');
-            });
-        });
-    </script>
-</body>
-</html>
+    <!-- Process Section -->
+    <section class="process-section">
+        <h2 class="section-title" style="text-align: center;">Comment ça marche ?</h2>
+        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto;">Trouvez votre logement idéal en seulement 4 étapes</p>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h4>Créez votre profil</h4>
+                <p>Décrivez vos critères de recherche et votre profil en 2 minutes</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h4>Recevez des propositions</h4>
+                <p>Nos algorithmes vous proposent les logements et colocataires les plus adaptés</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h4>Visitez et choisissez</h4>
+                <p>Organisez des visites virtuelles ou physiques de vos sélections</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h4>Finalisez en ligne</h4>
+                <p>Signez votre contrat et réglez en toute sécurité sur notre plateforme</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="modern-pricing">
+        <div class="section-header">
+            <h2 class="section-title">Trouvez <span class="highlight">votre formule</span> idéale</h2>
+            <p class="section-subtitle">Accédez à des fonctionnalités sur mesure pour simplifier votre recherche</p>
+        </div>
+
+        <div class="pricing-cards-container">
+            <div class="pricing-card student-card">
+                <div class="card-badge">Pour étudiants</div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3>Découverte</h3>
+                        <div class="price-container">
+                            <span class="price">0€</span>
+                            <span class="period">/toujours gratuit</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Accès aux annonces vérifiées</li>
+                        <li><i class="fas fa-check-circle"></i> 5 contacts par mois</li>
+                        <li><i class="fas fa-check-circle"></i> Alertes personnalisées</li>
+                        <li class="inactive"><i class="fas fa-times-circle"></i> Matching intelligent</li>
+                    </ul>
+                    <a href="{% url 'Register' %}" class="cta-button outline">Commencer</a>
+                </div>
+                <div class="card-footer">
+                    <p>Parfait pour une première recherche</p>
+                </div>
+            </div>
+
+            <div class="pricing-card premium-card">
+                <div class="card-badge popular">LE PLUS CHOISI</div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3>Premium</h3>
+                        <div class="price-container">
+                            <span class="price">9€</span>
+                            <span class="period">/mois</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Contacts illimités</li>
+                        <li><i class="fas fa-check-circle"></i> Matching personnalisé</li>
+                        <li><i class="fas fa-check-circle"></i> Contrats en ligne</li>
+                        <li><i class="fas fa-check-circle"></i> Support prioritaire 24/7</li>
+                    </ul>
+                    <a href="{% url 'Register' %}" class="cta-button solid">Essai gratuit 7 jours</a>
+                </div>
+                <div class="card-footer">
+                    <p>30 jours satisfait ou remboursé</p>
+                </div>
+            </div>
+
+            <div class="pricing-card owner-card">
+                <div class="card-badge">Pour propriétaires</div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3>Professionnel</h3>
+                        <div class="price-container">
+                            <span class="price">3%</span>
+                            <span class="period">par location</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Annonces mises en avant</li>
+                        <li><i class="fas fa-check-circle"></i> Vérification des locataires</li>
+                        <li><i class="fas fa-check-circle"></i> Gestion des contrats</li>
+                        <li><i class="fas fa-check-circle"></i> Assistance juridique</li>
+                    </ul>
+                    <a href="{% url 'Products' %}" class="cta-button outline">Publier une annonce</a>
+                </div>
+                <div class="card-footer">
+                    <p>Solution clé en main</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="security-badge">
+            <i class="fas fa-lock"></i>
+            <span>Paiements 100% sécurisés - Sans engagement</span>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2 class="section-title" style="text-align: center;">Questions fréquentes</h2>
+        <p class="section-subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-xl);">Trouvez des réponses à vos questions</p>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Comment UniColoc vérifie-t-il les annonces ?</span>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Notre équipe visite physiquement une sélection d'annonces et vérifie systématiquement les documents des propriétaires (titre de propriété, taxe foncière)...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Quelle est la différence entre les offres gratuite et premium ?</span>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>L'offre gratuite permet d'accéder à l'ensemble des annonces et d'effectuer jusqu'à 5 contacts par mois. L'offre premium offre des contacts illimités...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Comment fonctionne la garantie locative ?</span>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Notre partenaire financier se porte garant pour vous moyennant une commission unique de 2% du loyer annuel...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Puis-je résilier mon abonnement premium à tout moment ?</span>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Oui, vous pouvez résilier votre abonnement premium à tout moment depuis votre espace personnel...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Comment sont sélectionnés les colocataires proposés ?</span>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Notre algorithme analyse plus de 20 critères pour vous proposer les colocataires les plus compatibles...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main>
+
+
+          <!-- CTA Section -->
+          <section class="services-cta">
+              <h2 class="white" style="font-size: 2rem; margin-bottom: var(--space-md);">Prêt à trouver votre logement idéal ?</h2>
+              <p class="white" style="font-size: 1.2rem; margin-bottom: var(--space-lg); max-width: 600px; margin-left: auto; margin-right: auto;">Rejoignez des milliers d'étudiants satisfaits</p>
+              <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+                {% if user.is_authenticated %}
+                <a href="{% url 'Products' %}" class="btn-cta btn-cta-primary">Voir les annonces Maintenant</a>
+                {% else %}
+                  <a href="{% url 'Register' %}" class="btn-cta btn-cta-primary">S'inscrire gratuitement</a>
+                  <a href="{% url 'Contact' %}" class="btn-cta btn-cta-outline">Nous contacter</a>
+                  {% endif %}
+              </div>
+          </section>
+      </main>
+
+      <script>
+          // FAQ Toggle
+          const faqQuestions = document.querySelectorAll('.faq-question');
+          
+          faqQuestions.forEach(question => {
+              question.addEventListener('click', () => {
+                  const answer = question.nextElementSibling;
+                  const toggle = question.querySelector('.faq-toggle');
+                  
+                  answer.classList.toggle('active');
+                  toggle.classList.toggle('active');
+              });
+          });
+      </script>
+  </body>
+  </html>
 
 {% endblock content %}

@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser 
+from django.contrib.auth.models import AbstractUser  # type: ignore
+from django.conf import settings
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -52,6 +53,32 @@ class client(models.Model):
     bio = models.TextField(null=True, blank=True)
 
 
+class Reservation(models.Model):
+    client = models.ForeignKey(client, on_delete=models.CASCADE, related_name='reservations')
+    bien = models.ForeignKey(BienImmo, on_delete=models.CASCADE, related_name='reservations')
+    reservation_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('bien', 'reservation_date')
+        verbose_name = "Réservation"
+        verbose_name_plural = "Réservations"
+
+    def __str__(self):
+        return f"{self.client.user.username} reserved {self.bien.name} on {self.reservation_date}"
 
 
+class Message(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_messages', on_delete=models.CASCADE )
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_messages', on_delete=models.CASCADE)
+    bien = models.ForeignKey(BienImmo, related_name='messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['timestamp']
+
+    def __str__(self):
+        return f"Message from {self.sender} to {self.recipient} at {self.timestamp}"
     

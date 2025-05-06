@@ -1,7 +1,15 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
-from .models import BienImmo  
+from .models import BienImmo,Message,CustomUser ,Reservation
+
+
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['reservation_date']
+        widgets = {
+            'reservation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+        }
 
 class BienImmoForm(forms.ModelForm):
     class Meta:
@@ -57,3 +65,31 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username', 'status', 'phone_number', 'profile_picture', 'date_of_birth', 'address', 'Carteid')
 
 
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email',
+            'status',
+            'phone_number',
+            'profile_picture',
+            'date_of_birth',
+            'address',
+            'Carteid'
+        )
+        widgets = {
+            'email': forms.EmailInput(attrs={'placeholder': 'Entrez votre email'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Entrez votre numéro'}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'address': forms.TextInput(attrs={'placeholder': 'Entrez votre adresse'}),
+            'Carteid': forms.TextInput(attrs={'placeholder': 'Numéro de carte ID'}),
+        }
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Écrivez votre message...'})
+        }
