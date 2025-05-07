@@ -93,34 +93,47 @@ def Loginpage(request):
         return render(request, 'registration/login.html')
 
 
-
 def product_detail(request, id):
-        bien = get_object_or_404(BienImmo, id=id)
+    bien = get_object_or_404(BienImmo, id=id)
 
-        if request.method == 'POST':
-            form = ReservationForm(request.POST)
-            if form.is_valid():
-                reservation_date = form.cleaned_data['reservation_date']
-                # Vérifie si la date est déjà réservée pour ce bien
-                if Reservation.objects.filter(bien=bien, reservation_date=reservation_date).exists():
-                    form.add_error('reservation_date', 'Cette date est déjà réservée pour ce logement.')
-                else:
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+
+        if form.is_valid():
+            reservation_date = form.cleaned_data['reservation_date']
+
+            # Check if the reservation date is already taken
+            if Reservation.objects.filter(bien=bien, reservation_date=reservation_date).exists():
+                # Add error for the reservation date if already taken
+                form.add_error('reservation_date', 'Cette date est déjà réservée pour ce logement.')
+                messages.error(request, 'La date sélectionnée est déjà réservée.')
+            else:
+                # Check if the user is authenticated as a client (tenant)
+                if request.user.is_authenticated:
                     try:
                         locataire = client.objects.get(user=request.user)
+                        # Save the reservation with the tenant and property details
                         reservation = form.save(commit=False)
                         reservation.client = locataire
                         reservation.bien = bien
                         reservation.save()
+
+                        # Success message
                         messages.success(request, "Réservation effectuée avec succès.")
                         return redirect('Product', id=bien.id)
                     except client.DoesNotExist:
-                        form.add_error(None, 'Vous devez être connecté en tant que locataire pour réserver.')
+                        form.add_error(None, 'Vous devez être un locataire pour effectuer une réservation.')
+                        messages.error(request, 'Erreur: Vous devez être un locataire pour réserver.')
+                else:
+                    form.add_error(None, 'Vous devez être connecté en tant que locataire pour réserver.')
+                    messages.error(request, 'Erreur: Vous devez être connecté pour réserver.')
         else:
-            form = ReservationForm()
+            # The form has errors, display the form with errors
+            messages.error(request, 'Erreur: Veuillez corriger les erreurs ci-dessus.')
+    else:
+        form = ReservationForm()
 
-        return render(request, 'products/product.html', {'x': bien, 'form': form})
-
-    
+    return render(request, 'products/product.html', {'x': bien, 'form': form})
 def product_list(request):
         try:
             all_users = CustomUser.objects.all()  
@@ -254,9 +267,12 @@ def dash(request):
     users = CustomUser.objects.all() 
     clients = client.objects.all()   
     entrepreneurs = entrepreneur.objects.all() 
+    reservations = Reservation.objects.all()
+
     
     return render(request, 'adminp/dash.html', {
         'users': users,
         'clients': clients,
         'entrepreneurs': entrepreneurs,
+        'reservations':reservations,
     })

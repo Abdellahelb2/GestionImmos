@@ -217,5 +217,17 @@ h2 {
         <li class="empty-list">Aucun client</li>
         {% endfor %}
     </ul>
+    
+    <div class="section-divider"></div>
+
+    <h2>Réservations</h2>
+    <ul class="data-list">
+    {% for r in reservations %}
+    <li>{{ r.client.user.username }} a reserver {{ r.bien.name }} le {{r.created_at}}</li>
+  {% empty %}
+  <li class="empty-list">Aucune réservation trouvée.</li>
+      {% endfor %}
     </div>
+</ul>
+
 {% endblock content %}
