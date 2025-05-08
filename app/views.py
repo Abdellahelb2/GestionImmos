@@ -10,7 +10,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm
+from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 
     # Pages
@@ -183,13 +183,11 @@ def add_product(request):
 def modify_profile(request):
         user = request.user
 
-        if user.status == 'entrepreneur':
-            profile_model = entrepreneur
-        elif user.status == 'client':
-            profile_model = client
-        else:
-            messages.error(request, "⚠️ Only clients or entrepreneurs can modify their profile.")
-            return redirect('profile')
+   
+        profile_model = entrepreneur
+       
+        profile_model = client
+     
 
         try:
             profile_instance = profile_model.objects.get(user=user)
@@ -198,7 +196,7 @@ def modify_profile(request):
             profile_instance.save()
 
         if request.method == 'POST':
-            form = CustomUserCreationForm(request.POST, request.FILES, instance=user)
+            form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
             if form.is_valid():
                 form.save()
                 messages.success(request, "✅ Profile updated successfully!")
@@ -206,7 +204,7 @@ def modify_profile(request):
             else:
                 messages.error(request, "⚠️ Please fix the errors in the form.")
         else:
-            form = CustomUserCreationForm(instance=user)
+            form = CustomUserChangeForm(instance=user)
 
         return render(request, 'registration/modify_profile.html', {'form': form})
 
@@ -226,8 +224,6 @@ def profile(request):
 
 @login_required
 def conversation(request, bien_id, recipient_id):
-
-
     bien = get_object_or_404(BienImmo, id=bien_id)
     recipient = get_object_or_404(CustomUser, id=recipient_id)
     

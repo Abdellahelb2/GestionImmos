@@ -359,22 +359,42 @@ h1 {
 
 </style> 
 {% if user.is_authenticated %}
-<div class="filter-bar my-6 text-center">
-  <a href="?type=a vendre" class="btn-filter">À vendre</a>
-  <a href="?type=a louer" class="btn-filter">À louer</a>
-  <a href="." class="btn-filter">Tous</a>
- 
-  <div class="mt-4">
-      {% if request.GET.type == 'a vendre' %}
-          <p class="text-xl font-bold text-green-600">Produits à vendre</p>
-      {% elif request.GET.type == 'a louer' %}
-          <p class="text-xl font-bold text-blue-600">Produits à louer</p>
-      {% else %}
-          <p class="text-xl font-bold text-gray-800">Tous les produits</p>
-      {% endif %}
-      {% endif %}
+<div class="filter-bar my-8 text-center">
+  <div class="flex justify-center gap-4 flex-wrap">
+    <a href="?type=a vendre"
+       class="px-4 py-2 font-semibold rounded-lg transition"
+       style="background-color: var(--secondary-color); color: var(--light-text);"
+       onmouseover="this.style.backgroundColor='var(--primary-dark)';"
+       onmouseout="this.style.backgroundColor='var(--secondary-color)';">
+      À vendre
+    </a>
+    <a href="?type=a louer"
+       class="px-4 py-2 font-semibold rounded-lg transition"
+       style="background-color: var(--accent-color); color: var(--light-text);"
+       onmouseover="this.style.backgroundColor='var(--primary-dark)';"
+       onmouseout="this.style.backgroundColor='var(--accent-color)';">
+      À louer
+    </a>
+    <a href="."
+       class="px-4 py-2 font-semibold rounded-lg transition"
+       style="background-color: var(--light-gray); color: var(--text-color);"
+       onmouseover="this.style.backgroundColor='var(--medium-gray)';"
+       onmouseout="this.style.backgroundColor='var(--light-gray)';">
+      Tous
+    </a>
+  </div>
+
+  <div class="mt-6">
+    {% if request.GET.type == 'a vendre' %}
+      <p class="text-2xl font-bold" style="color: var(--secondary-color);">Produits à vendre</p>
+    {% elif request.GET.type == 'a louer' %}
+      <p class="text-2xl font-bold" style="color: var(--accent-color);">Produits à louer</p>
+    {% else %}
+      <p class="text-2xl font-bold" style="color: var(--text-color);">Tous les produits</p>
+    {% endif %}
   </div>
 </div>
+{% endif %}
 
 <!-- Utilisateur connecté -->
 

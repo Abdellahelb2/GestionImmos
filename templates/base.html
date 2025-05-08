@@ -833,12 +833,7 @@ footer::before {
             <li><a href="{% url 'modify_profile' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Modify Profile</a></li>
             <li><a href="{% url 'AddProduct' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Add Product</a></li>
             <li> <a href="{% url 'inbox' %}"> Messages
-              {% with unread=messages_received|length %}
-                {% if unread > 0 %}
-                  <span class="badge">{{ unread }}</span>
-                {% endif %}
-              {% endwith %}
-            </a></li>
+              </a></li>
             {% if user.status == 'admin' %}
                 <li><a href="{% url 'Dashboard' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Dashboard</a></li>
             {% endif %}
@@ -861,7 +856,7 @@ footer::before {
             <div class="footer-container">
                 <section class="footer-section">
                     <h4>About Us</h4>
-                    <p>bihbvshjvbjsbjkvm.</p>
+                    <p>Chez Toit et Moi, nous repensons la gestion immobilière pour la rendre plus simple, plus humaine et plus efficace. Notre plateforme est née de la volonté de moderniser le secteur immobilier en proposant des services digitaux innovants, pensés aussi bien pour les propriétaires que pour les locataires.</p>
                 </section>
     
                 <section class="footer-section">
