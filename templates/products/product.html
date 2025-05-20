@@ -601,7 +601,7 @@ body {
       </div>
       
       <p class="urgent-message">Perle rare ! Les réservations pour ce logement sont fréquentes.</p>
-      
+       {% if user.is_authenticated and user != x.user.user %}
       <div class="action-buttons">
         <div class="btn-group">
           <button class="btn btn-outline">
@@ -610,7 +610,7 @@ body {
               <polyline points="16 6 12 2 8 6"></polyline>
               <line x1="12" y1="2" x2="12" y2="15"></line>
             </svg>
-            {% if user.is_authenticated and user != x.user.user %}
+           
   <a href="{% url 'conversation' bien_id=x.id recipient_id=x.user.user.id %}" class="btn btn-primary">
     Contacter l'entrepreneur
   </a>

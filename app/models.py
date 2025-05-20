@@ -27,7 +27,7 @@ class BienImmo(models.Model):
         ('a vendre', 'a vendre'), 
         ('a louer', 'a louer')
     ]
-    name = models.CharField(max_length=50, default='nouvelle apartement')
+    name = models.CharField(max_length=200, default='nouvelle apartement')
     type = models.CharField(max_length=50, null=True, blank=True, choices=x)
     price = models.DecimalField(max_digits=15, decimal_places=2)
     content = models.TextField()

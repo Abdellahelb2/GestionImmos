@@ -155,29 +155,24 @@ def product_list(request):
 
 @login_required(login_url='/login/')
 def add_product(request):
-        if request.user.status == 'client'  :
-            messages.error(request, "❌ Tu n'as pas de droit d'ajouter un produit ici")
-            return redirect('main')
-        try:
-            entrepreneur_instance = entrepreneur.objects.get(user=request.user)
-        except entrepreneur.DoesNotExist:
-            messages.error(request, "⚠️ Complete ton profile avant de poster une annonce")
-            return redirect('profile')  
-
-        if request.method == 'POST':
-            form = BienImmoForm(request.POST, request.FILES)
-            if form.is_valid():
-                product = form.save(commit=False)
-                product.user = entrepreneur_instance  
-                product.save()
-                messages.success(request, "✅ Product Ajouter!")
-                return redirect('Products')
-            else:
-                messages.error(request, "⚠️ Erreur")
+    if request.user.status == 'client':
+        messages.error(request, "❌ Tu n'as pas de droit d'ajouter un produit ici")
+        return redirect('main')
+    entrepreneur_instance, created = entrepreneur.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = BienImmoForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = entrepreneur_instance
+            product.save()
+            messages.success(request, "✅ Produit ajouté !")
+            return redirect('Products')
         else:
-            form = BienImmoForm()
+            messages.error(request, "⚠️ Erreur lors de la soumission du formulaire.")
+    else:
+        form = BienImmoForm()
 
-        return render(request, 'products/add_product.html', {'form': form})
+    return render(request, 'products/add_product.html', {'form': form})
     
 @login_required
 def modify_profile(request):
