@@ -81,4 +81,17 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender} to {self.recipient} at {self.timestamp}"
-    
+
+
+
+class Favoris(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
+    bien = models.ForeignKey(BienImmo, on_delete=models.CASCADE, related_name='favori_par')
+    date_ajout = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'bien')
+        verbose_name_plural = "Favoris"
+
+    def __str__(self):
+        return f"{self.user.username} ❤️ {self.bien.name}"

@@ -819,21 +819,18 @@ footer::before {
             <li><a href="{% url 'Settings' %}">About</a></li>
             <li><a href="{% url 'Services' %}">Services</a></li>
             <li><a href="{% url 'Contact' %}">Contact</a></li>
-
-           
             {% if user.is_authenticated %}
             <li class="relative">
               <a href="javascript:void(0)" id="profile-menu-toggle">
                 <img src="{{ request.user.profile_picture.url }}"  alt="Profile Picture" class="w-12 h-12 rounded-full border-2 border-primary-light">
               </a>
           </li>
-          
             <ul id="profile-menu">
             <li><a href="{% url 'profile' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Profile</a></li>
             <li><a href="{% url 'modify_profile' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Modify Profile</a></li>
             <li><a href="{% url 'AddProduct' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Add Product</a></li>
-            <li> <a href="{% url 'inbox' %}"> Messages
-              </a></li>
+            <li><a href="{% url 'my_favoris' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Mes favoris</a></li> 
+            <li> <a href="{% url 'inbox' %}"> Messages</a></li>
             {% if user.status == 'admin' %}
                 <li><a href="{% url 'Dashboard' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Dashboard</a></li>
             {% endif %}

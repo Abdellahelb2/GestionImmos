@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import CustomUser,client,entrepreneur,BienImmo,Reservation,Message  
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
@@ -92,9 +93,11 @@ def Loginpage(request):
                 return redirect('main')
         return render(request, 'registration/login.html')
 
-
 def product_detail(request, id):
     bien = get_object_or_404(BienImmo, id=id)
+    is_favoris = False
+    if request.user.is_authenticated:
+        is_favoris = Favoris.objects.filter(user=request.user, bien=bien).exists()
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
@@ -102,23 +105,17 @@ def product_detail(request, id):
         if form.is_valid():
             reservation_date = form.cleaned_data['reservation_date']
 
-            # Check if the reservation date is already taken
             if Reservation.objects.filter(bien=bien, reservation_date=reservation_date).exists():
-                # Add error for the reservation date if already taken
                 form.add_error('reservation_date', 'Cette date est déjà réservée pour ce logement.')
                 messages.error(request, 'La date sélectionnée est déjà réservée.')
             else:
-                # Check if the user is authenticated as a client (tenant)
                 if request.user.is_authenticated:
                     try:
                         locataire = client.objects.get(user=request.user)
-                        # Save the reservation with the tenant and property details
                         reservation = form.save(commit=False)
                         reservation.client = locataire
                         reservation.bien = bien
                         reservation.save()
-
-                        # Success message
                         messages.success(request, "Réservation effectuée avec succès.")
                         return redirect('Product', id=bien.id)
                     except client.DoesNotExist:
@@ -128,30 +125,36 @@ def product_detail(request, id):
                     form.add_error(None, 'Vous devez être connecté en tant que locataire pour réserver.')
                     messages.error(request, 'Erreur: Vous devez être connecté pour réserver.')
         else:
-            # The form has errors, display the form with errors
             messages.error(request, 'Erreur: Veuillez corriger les erreurs ci-dessus.')
     else:
         form = ReservationForm()
 
-    return render(request, 'products/product.html', {'x': bien, 'form': form})
+    return render(request, 'products/product.html', {
+        'x': bien,
+        'form': form,
+        'is_favoris': is_favoris
+    })
+
 def product_list(request):
-        try:
-            all_users = CustomUser.objects.all()  
-        except CustomUser.DoesNotExist:
-            raise Http404("Locataire not found")
+    try:
+        all_users = CustomUser.objects.all()
+    except CustomUser.DoesNotExist:
+        raise Http404("Locataire not found")
 
-        type_filter = request.GET.get('type')
+    type_filter = request.GET.get('type')
 
-        if type_filter in ['a vendre', 'a louer']:
-            house = BienImmo.objects.filter(type=type_filter)
-        else:
-            house = BienImmo.objects.all()
+    if type_filter in ['a vendre', 'a louer']:
+        house = BienImmo.objects.filter(type=type_filter)
+    else:
+        house = BienImmo.objects.all()
 
-        return render(request, 'products/products.html', {
-            'house': house,
-            'locataire': all_users 
-        })
-
+    q = request.GET.get('q')
+    if q:
+        house = house.filter(name__icontains=q)
+    return render(request, 'products/products.html', {
+        'house': house,
+        'locataire': all_users,
+    })
 
 @login_required(login_url='/login/')
 def add_product(request):
@@ -267,3 +270,27 @@ def dash(request):
         'entrepreneurs': entrepreneurs,
         'reservations':reservations,
     })
+
+@login_required
+def add_to_favoris(request, bien_id):
+    bien = get_object_or_404(BienImmo, id=bien_id)
+    favoris, created = Favoris.objects.get_or_create(user=request.user, bien=bien)
+    if created:
+        messages.success(request, "✅ Ajouté aux favoris !")
+    else:
+        messages.info(request, "ℹ️ Déjà dans vos favoris.")
+    return redirect('Product', id=bien.id)
+  
+
+@login_required
+def remove_from_favoris(request, bien_id):
+    bien = get_object_or_404(BienImmo, id=bien_id)
+    Favoris.objects.filter(user=request.user, bien=bien).delete()
+    messages.success(request, "🗑️ Supprimé des favoris.")
+    return redirect('Product', id=bien.id)
+
+
+@login_required(login_url='/login/')
+def my_favoris(request):
+    favoris_list = Favoris.objects.filter(user=request.user).select_related('bien')
+    return render(request, 'registration/mesfav.html', {'favoris_list': favoris_list})

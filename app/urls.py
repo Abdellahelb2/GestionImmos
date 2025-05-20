@@ -21,6 +21,11 @@ urlpatterns = [
     path('dash/', views.dash, name='Dashboard'),
     path('messaging/<int:bien_id>/<int:recipient_id>/', views.conversation, name='conversation'),
     path('inbox/', views.inbox, name='inbox'),
+    path('favoris/add/<int:bien_id>/', views.add_to_favoris, name='add_to_favoris'),
+    path('favoris/remove/<int:bien_id>/', views.remove_from_favoris, name='remove_from_favoris'),
+    path('mes-favoris/', views.my_favoris, name='my_favoris'),
+
+
 
 
 ]
