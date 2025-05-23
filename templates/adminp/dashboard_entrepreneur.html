@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Réservations en attente</h2>
+
+{% if reservations %}
+  <ul class="reservation-list">
+    {% for r in reservations %}
+      <li class="reservation-item">
+        <p><strong>Bien :</strong> {{ r.bien.name }}</p>
+        <p><strong>Client :</strong> {{ r.client.user.username }}</p>
+        <p><strong>Date :</strong> {{ r.reservation_date }} à {{ r.reservation_time }}</p>
+        <p><strong>Statut :</strong> {{ r.get_status_display }}</p>
+
+        {% if r.status == 'en_attente' %}
+          <a href="{% url 'traiter_reservation' r.id 'accepter' %}" class="btn btn-success">✅ Accepter</a>
+          <a href="{% url 'traiter_reservation' r.id 'refuser' %}" class="btn btn-danger">❌ Refuser</a>
+          
+        {% else %}
+        <a href="{% url 'traiter_reservation' r.id 'annuler' %}" class="btn btn-danger">❌ Annuler</a>
+          <span class="status-label {{ r.status }}">{{ r.get_status_display }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Aucune réservation en attente.</p>
+{% endif %}
+<style>
+h2 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+/* Reservation list container */
+.reservation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Individual reservation item */
+.reservation-item {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.reservation-item:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Reservation details */
+.reservation-item p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+.reservation-item p strong {
+    color: #2c3e50;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 80px;
+}
+
+/* Button styling */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    margin: 0.5rem 0.5rem 0 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 100px;
+}
+
+.btn-success {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #2ecc71;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+/* Status labels */
+.status-label {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-label.accepte {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-label.refuse {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-label.en_attente {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* No reservations message */
+.reservation-list + p,
+h2 + p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+/* Action buttons container */
+.reservation-item .btn {
+    margin-top: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .reservation-item {
+        padding: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        display: block;
+        width: 100%;
+        margin: 0.3rem 0;
+    }
+    
+    .reservation-item p strong {
+        display: block;
+        margin-bottom: 0.2rem;
+    }
+}
+
+/* Alternative grid layout for larger screens */
+@media (min-width: 992px) {
+    .reservation-list {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+/* Enhanced visual hierarchy */
+.reservation-item p:first-of-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* Button focus states for accessibility */
+.btn:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Loading/hover states */
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Additional visual enhancements */
+.reservation-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    border-radius: 12px 12px 0 0;
+}
+</style>
+
+{% endblock %}

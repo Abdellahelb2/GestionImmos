@@ -171,8 +171,9 @@ h2 {
         <th>ID</th>
         <th>Nom d'utilisateur</th>
         <th>Email</th>
-        <th>Statut</th>
         <th>Inscrit le</th>
+        <th>Action</th>
+        <th>role</th>
       </tr>
     </thead>
     <tbody>
@@ -181,16 +182,9 @@ h2 {
         <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>
-          {% if user.status == "active" %}
-            <span class="status-badge status-active">Actif</span>
-          {% elif user.status == "inactive" %}
-            <span class="status-badge status-inactive">Inactif</span>
-          {% else %}
-            <span class="status-badge status-pending">En attente</span>
-          {% endif %}
-        </td>
         <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+        <td><button style="border: #030712 solid;padding:5px 5px 5px 5px;text-decoration: none ;"><a href="">Modify</a></button>.<button style="border: #030712 solid;padding:5px 5px 5px 5px ;text-decoration: none ;"><a href="">Delete</a></button></td>
+        <td>{{ user.status }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -217,17 +211,5 @@ h2 {
         <li class="empty-list">Aucun client</li>
         {% endfor %}
     </ul>
-    
-    <div class="section-divider"></div>
-
-    <h2>Réservations</h2>
-    <ul class="data-list">
-    {% for r in reservations %}
-    <li>{{ r.client.user.username }} a reserver {{ r.bien.name }} le {{r.created_at}}</li>
-  {% empty %}
-  <li class="empty-list">Aucune réservation trouvée.</li>
-      {% endfor %}
-    </div>
-</ul>
 
 {% endblock content %}

@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.views.generic import UpdateView, DeleteView
+from django.http import HttpResponse,HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404
 from django.contrib.auth import login as loginuser, logout as logoutuser, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser,client,entrepreneur,BienImmo,Reservation,Message  
+from .models import CustomUser,client,entrepreneur,BienImmo,Reservation,Message,Favoris
 from django.core.mail import send_mail
 from django.conf import settings
 from django.db.models import Q
@@ -13,6 +15,10 @@ from django.contrib.auth import login
 from django.contrib import messages
 from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import reverse_lazy
+from django.core.exceptions import ValidationError
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
     # Pages
 def SayHello(request):
@@ -92,49 +98,70 @@ def Loginpage(request):
                 messages.error(request, "❌ Invalid username or password!")
                 return redirect('main')
         return render(request, 'registration/login.html')
+from django.shortcuts import get_object_or_404, redirect, render
 
 def product_detail(request, id):
     bien = get_object_or_404(BienImmo, id=id)
-    is_favoris = False
-    if request.user.is_authenticated:
-        is_favoris = Favoris.objects.filter(user=request.user, bien=bien).exists()
+    is_favoris = request.user.is_authenticated and Favoris.objects.filter(user=request.user, bien=bien).exists()
+    form = ReservationForm(request.POST or None)
 
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        if not request.user.is_authenticated:
+            messages.error(request, 'Vous devez être connecté pour réserver.')
+            form.add_error(None, 'Vous devez être connecté pour réserver.')
+        elif form.is_valid():
+            try:
+                locataire = client.objects.get(user=request.user)
+                reservation = form.save(commit=False)
+                reservation.client = locataire
+                reservation.bien = bien
 
-        if form.is_valid():
-            reservation_date = form.cleaned_data['reservation_date']
+                # Vérifie uniquement les réservations acceptées
+                slot_taken = Reservation.objects.filter(
+                    bien=bien,
+                    reservation_date=reservation.reservation_date,
+                    reservation_time=reservation.reservation_time,
+                    status='acceptee'
+                ).exists()
 
-            if Reservation.objects.filter(bien=bien, reservation_date=reservation_date).exists():
-                form.add_error('reservation_date', 'Cette date est déjà réservée pour ce logement.')
-                messages.error(request, 'La date sélectionnée est déjà réservée.')
-            else:
-                if request.user.is_authenticated:
+                if slot_taken:
+                    form.add_error('reservation_time', 'Ce créneau est déjà réservé pour ce logement.')
+                    messages.error(request, 'Erreur : ce créneau est déjà pris.')
+                else:
                     try:
-                        locataire = client.objects.get(user=request.user)
-                        reservation = form.save(commit=False)
-                        reservation.client = locataire
-                        reservation.bien = bien
+                        reservation.full_clean()
                         reservation.save()
                         messages.success(request, "Réservation effectuée avec succès.")
                         return redirect('Product', id=bien.id)
-                    except client.DoesNotExist:
-                        form.add_error(None, 'Vous devez être un locataire pour effectuer une réservation.')
-                        messages.error(request, 'Erreur: Vous devez être un locataire pour réserver.')
-                else:
-                    form.add_error(None, 'Vous devez être connecté en tant que locataire pour réserver.')
-                    messages.error(request, 'Erreur: Vous devez être connecté pour réserver.')
+                    except ValidationError:
+                        form.add_error('reservation_time', 'Erreur de validation des données.')
+                        messages.error(request, 'Erreur : ce créneau est invalide.')
+            except client.DoesNotExist:
+                form.add_error(None, 'Vous devez être un locataire pour effectuer une réservation.')
+                messages.error(request, 'Erreur: Vous devez être un locataire pour réserver.')
         else:
             messages.error(request, 'Erreur: Veuillez corriger les erreurs ci-dessus.')
-    else:
-        form = ReservationForm()
 
     return render(request, 'products/product.html', {
         'x': bien,
         'form': form,
-        'is_favoris': is_favoris
+        'is_favoris': is_favoris,
     })
 
+class BienUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = BienImmo
+    fields = ['name', 'type', 'price', 'content', 'address', 'image1', 'image2', 'image3', 'image4', 'image5']
+    success_url = reverse_lazy('Products')
+    def test_func(self):
+        bien = self.get_object()
+        user = self.request.user
+        if user.status == 'admin':
+            return True
+        try:
+            ent = entrepreneur.objects.get(user=user)
+            return bien.user == ent
+        except entrepreneur.DoesNotExist:
+            return False
 def product_list(request):
     try:
         all_users = CustomUser.objects.all()
@@ -155,12 +182,18 @@ def product_list(request):
         'house': house,
         'locataire': all_users,
     })
+class BienDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = BienImmo
+    success_url = '/product/'  
 
+    def test_func(self):
+        return self.request.user.status == 'admin'
+    
 @login_required(login_url='/login/')
 def add_product(request):
     if request.user.status == 'client':
         messages.error(request, "❌ Tu n'as pas de droit d'ajouter un produit ici")
-        return redirect('main')
+        return redirect('Sayhello')
     entrepreneur_instance, created = entrepreneur.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = BienImmoForm(request.POST, request.FILES)
@@ -288,6 +321,38 @@ def remove_from_favoris(request, bien_id):
     Favoris.objects.filter(user=request.user, bien=bien).delete()
     messages.success(request, "🗑️ Supprimé des favoris.")
     return redirect('Product', id=bien.id)
+
+
+@login_required
+def traiter_reservation(request, reservation_id, action):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    if request.user != reservation.bien.user.user:
+        return HttpResponseForbidden()
+    
+    if action == 'accepter':
+        reservation.status = 'acceptee'
+        reservation.save()
+    
+    elif action == 'refuser':
+        
+        reservation.delete()
+    
+    elif action == 'annuler':
+    
+        reservation.delete()
+    
+    else:
+        return HttpResponseForbidden()
+    
+    return redirect('dashboard_entrepreneur')
+
+@login_required
+def dashboard_entrepreneur(request):
+    reservations = Reservation.objects.filter(bien__user__user=request.user).order_by('-reservation_date')
+    return render(request, 'adminp/dashboard_entrepreneur.html', {
+        'reservations': reservations
+    })
+
 
 
 @login_required(login_url='/login/')

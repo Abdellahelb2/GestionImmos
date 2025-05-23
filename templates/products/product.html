@@ -520,6 +520,34 @@ body {
   color: inherit;
 }
 </style>
+<script>
+  const reservedSlots = JSON.parse('{{ reserved_slots_json|safe }}');
+
+  const getUnavailableTimes = (selectedDate) => {
+    return reservedSlots
+      .filter(slot => slot.reservation_date === selectedDate)
+      .map(slot => slot.reservation_time.slice(0, 5)); // format HH:MM
+  };
+
+  flatpickr("#id_reservation_date", {
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    onChange: function(selectedDates, dateStr, instance) {
+      const timeSelect = document.getElementById('id_reservation_time');
+      if (!timeSelect) return;
+
+      // Réinitialise
+      [...timeSelect.options].forEach(option => option.disabled = false);
+
+      const unavailableTimes = getUnavailableTimes(dateStr);
+      [...timeSelect.options].forEach(option => {
+        if (unavailableTimes.includes(option.value)) {
+          option.disabled = true;
+        }
+      });
+    }
+  });
+</script>
 
 <div class="product-container">
   <div class="product-card">
@@ -683,31 +711,46 @@ body {
       
       <p class="urgent-message">Perle rare ! Les réservations pour ce logement sont fréquentes.</p>
       
-      <!-- Reservation form is kept at the bottom -->
-      {% if user.is_authenticated and user != x.user.user %}
-      <form method="POST" class="reservation-form" id="reservation-form">
-        {% csrf_token %}
-        <label for="id_reservation_date">Date de réservation :</label>
-        {{ form.reservation_date }}
-        <button type="submit" class="btn btn-primary">
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
-          Réserver maintenant
-        </button>
-        {% if messages %}
-        <div id="alert-container">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-        {% endif %}
-      </form>
-      {% endif %}
-    </div>
-  </div>
+{% if bien.user.user == user %}
+  <button class="btn btn-outline"><a href="{% url 'bien_modifier' x.id %} ">Modifier</a></button>
+{% endif %}
+{% if user.status == 'admin' %}
+ <button class="btn btn-outline">  <a href="{% url 'bien_supprimer' x.id %} ">Supprimer</a  ></button>
+{% endif %}
+
+     {% if user.is_authenticated and user != x.user.user %}
+  <form method="POST" class="reservation-form" id="reservation-form">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <label for="id_reservation_date">Date de réservation :</label>
+{{ form.reservation_date }}
+
+<label for="id_reservation_time">Heure de réservation :</label>
+{{ form.reservation_time }}
+
+
+    <button type="submit" class="btn btn-primary">
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Réserver maintenant
+    </button>
+
+    {% if messages %}
+      <div id="alert-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </form>
+{% endif %}
 </div>
 
 <style>

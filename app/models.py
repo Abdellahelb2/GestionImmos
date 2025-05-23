@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser  # type: ignore
 from django.conf import settings
+from django.core.exceptions import ValidationError
+import datetime
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -54,18 +56,35 @@ class client(models.Model):
 
 
 class Reservation(models.Model):
-    client = models.ForeignKey(client, on_delete=models.CASCADE, related_name='reservations')
-    bien = models.ForeignKey(BienImmo, on_delete=models.CASCADE, related_name='reservations')
+    STATUS_CHOICES = [
+        ('en_attente', 'En attente'),
+        ('acceptee', 'Acceptée'),
+        ('refusee', 'Refusée'),
+        ('annulee', 'Annulée'),
+    ]
+    client = models.ForeignKey(client, on_delete=models.CASCADE)
+    bien = models.ForeignKey(BienImmo, on_delete=models.CASCADE)
     reservation_date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('bien', 'reservation_date')
-        verbose_name = "Réservation"
-        verbose_name_plural = "Réservations"
+    reservation_time = models.TimeField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='en_attente')
 
     def __str__(self):
-        return f"{self.client.user.username} reserved {self.bien.name} on {self.reservation_date}"
+        return f"{self.client.user.username} reserved {self.bien.name} on {self.reservation_date} at {self.reservation_time}"
+
+    import datetime
+
+def clean(self):
+    if self.reservation_date < datetime.date.today():
+        raise ValidationError("Vous ne pouvez pas réserver pour une date passée.")
+    
+    reservations_count = Reservation.objects.filter(
+        client=self.client,
+        reservation_date=self.reservation_date
+    ).exclude(pk=self.pk).count()
+
+    if reservations_count >= 3:
+        raise ValidationError("Vous ne pouvez pas réserver plus de 3 fois par jour.")
+
 
 
 class Message(models.Model):

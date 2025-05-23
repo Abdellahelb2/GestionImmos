@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import path
 from django.conf.urls.static import static
 from . import views
+from .views import BienUpdateView, BienDeleteView
 
 urlpatterns = [
     path('', views.SayHello, name='SayHello'),
@@ -24,6 +25,12 @@ urlpatterns = [
     path('favoris/add/<int:bien_id>/', views.add_to_favoris, name='add_to_favoris'),
     path('favoris/remove/<int:bien_id>/', views.remove_from_favoris, name='remove_from_favoris'),
     path('mes-favoris/', views.my_favoris, name='my_favoris'),
+    path('bien/<int:pk>/modifier/', BienUpdateView.as_view(), name='bien_modifier'),
+    path('bien/<int:pk>/supprimer/', BienDeleteView.as_view(), name='bien_supprimer'),
+    path('reservation/<int:reservation_id>/<str:action>/',views.traiter_reservation, name='traiter_reservation'),
+    path('reservations/gestion/', views.dashboard_entrepreneur, name='dashboard_entrepreneur'),
+
+
 
 
 

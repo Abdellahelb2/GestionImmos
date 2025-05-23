@@ -1,15 +1,32 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm
 from .models import BienImmo,Message,CustomUser ,Reservation
-
+import datetime
 
 class ReservationForm(forms.ModelForm):
+    HEURE_CHOICES = [
+        (datetime.time(hour=h), f"{h:02d}:00")
+        for h in range(9, 18) 
+    ]
+
+    reservation_time = forms.TimeField(
+        widget=forms.Select(choices=HEURE_CHOICES),
+        label="Heure de réservation"
+    )
+
     class Meta:
         model = Reservation
-        fields = ['reservation_date']
+        fields = ['reservation_date', 'reservation_time']
         widgets = {
-            'reservation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+            'reservation_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+    def clean_reservation_date(self):
+        date = self.cleaned_data['reservation_date']
+        if date < datetime.date.today():
+            raise forms.ValidationError("Vous ne pouvez pas réserver pour une date passée.")
+        return date
+
 
 class BienImmoForm(forms.ModelForm):
     class Meta:
