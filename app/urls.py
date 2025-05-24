@@ -29,7 +29,8 @@ urlpatterns = [
     path('bien/<int:pk>/supprimer/', BienDeleteView.as_view(), name='bien_supprimer'),
     path('reservation/<int:reservation_id>/<str:action>/',views.traiter_reservation, name='traiter_reservation'),
     path('reservations/gestion/', views.dashboard_entrepreneur, name='dashboard_entrepreneur'),
-
+    path('bien/<int:bien_id>/status/', views.update_bien_status, name='update_bien_status'),
+    path('update-bien/<int:id>/', views.update_bien_status, name='update_bien_status'),
 
 
 

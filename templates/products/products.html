@@ -543,9 +543,23 @@ h1 {
   </div>
 </div>
 {% endif %}
+
   <div class="product-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for x in house %}
-      <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+     <style>
+  .inactive {
+    opacity: 0.5;
+    pointer-events: none; 
+    filter: grayscale(100%);
+  }
+
+  .inactive .view-details {
+    pointer-events: none;
+    color: #ccc;
+  }
+</style>
+
+      <div class="product-card bg-white rounded-lg shadow-md overflow-hidden {% if not x.active %}inactive{% endif %}">
           <div class="image-container relative">
               {% if x.image1 %}
                   <img src="{{ x.image1.url }}" alt="{{ x.name }}" class="w-full h-48 object-cover">

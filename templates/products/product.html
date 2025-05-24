@@ -711,8 +711,8 @@ body {
       
       <p class="urgent-message">Perle rare ! Les réservations pour ce logement sont fréquentes.</p>
       
-{% if bien.user.user == user %}
-  <button class="btn btn-outline"><a href="{% url 'bien_modifier' x.id %} ">Modifier</a></button>
+{% if x.user and x.user.user == user and user.status == 'entrepreneur' %}
+  <a class="btn btn-outline" href="{% url 'bien_modifier' x.id %}">Modifier</a>
 {% endif %}
 {% if user.status == 'admin' %}
  <button class="btn btn-outline">  <a href="{% url 'bien_supprimer' x.id %} ">Supprimer</a  ></button>

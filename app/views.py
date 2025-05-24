@@ -13,12 +13,10 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm
+from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm,checkForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
-from django.core.serializers.json import DjangoJSONEncoder
-import json
 
     # Pages
 def SayHello(request):
@@ -98,7 +96,7 @@ def Loginpage(request):
                 messages.error(request, "❌ Invalid username or password!")
                 return redirect('main')
         return render(request, 'registration/login.html')
-from django.shortcuts import get_object_or_404, redirect, render
+
 
 def product_detail(request, id):
     bien = get_object_or_404(BienImmo, id=id)
@@ -115,8 +113,6 @@ def product_detail(request, id):
                 reservation = form.save(commit=False)
                 reservation.client = locataire
                 reservation.bien = bien
-
-                # Vérifie uniquement les réservations acceptées
                 slot_taken = Reservation.objects.filter(
                     bien=bien,
                     reservation_date=reservation.reservation_date,
@@ -285,24 +281,39 @@ def conversation(request, bien_id, recipient_id):
 
 @login_required
 def inbox(request):
-    messages_received = Message.objects.filter(recipient=request.user).order_by('-timestamp')
-    return render(request, 'messaging/inbox.html', {'messages': messages_received})
+    user_messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
+    user_messages.filter(is_read=False).update(is_read=True)
+    return render(request, 'messaging/inbox.html', {'messages': user_messages})
 
+
+def unread_message_count(request):
+    if request.user.is_authenticated:
+        count = Message.objects.filter(recipient=request.user, is_read=False).count()
+        return {'unread_message_count': count}
+    return {}
 
 @staff_member_required(login_url='/login/')  
 def dash(request):
+    biens = BienImmo.objects.all() 
+    check_forms = {bien.id: checkForm(instance=bien) for bien in biens}
     users = CustomUser.objects.all() 
     clients = client.objects.all()   
     entrepreneurs = entrepreneur.objects.all() 
     reservations = Reservation.objects.all()
+    
 
     
     return render(request, 'adminp/dash.html', {
+        'biens': biens,
         'users': users,
+        'check_forms': check_forms,
         'clients': clients,
         'entrepreneurs': entrepreneurs,
         'reservations':reservations,
     })
+
+
+
 
 @login_required
 def add_to_favoris(request, bien_id):
@@ -310,8 +321,6 @@ def add_to_favoris(request, bien_id):
     favoris, created = Favoris.objects.get_or_create(user=request.user, bien=bien)
     if created:
         messages.success(request, "✅ Ajouté aux favoris !")
-    else:
-        messages.info(request, "ℹ️ Déjà dans vos favoris.")
     return redirect('Product', id=bien.id)
   
 
@@ -359,3 +368,37 @@ def dashboard_entrepreneur(request):
 def my_favoris(request):
     favoris_list = Favoris.objects.filter(user=request.user).select_related('bien')
     return render(request, 'registration/mesfav.html', {'favoris_list': favoris_list})
+
+
+
+@login_required
+def mes_notifications(request):
+    notifications = request.user.notifications.all().order_by('-timestamp')
+    return render(request, 'base.html', {'notifications': notifications})
+
+
+@login_required
+def update_bien_status(request, id):
+    bien = get_object_or_404(BienImmo, id=id)
+    is_admin = request.user.is_superuser
+    is_owner = False
+    try:
+        current_entrepreneur = entrepreneur.objects.get(user=request.user)
+        is_owner = bien.user == current_entrepreneur
+    except entrepreneur.DoesNotExist:
+        pass
+
+    if not (is_admin or is_owner):
+        return HttpResponseForbidden("🚫 Vous n'avez pas la permission de modifier ce bien.")
+
+    if request.method == 'POST':
+        form = checkForm(request.POST, instance=bien)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "✅ Statut du bien mis à jour.")
+           
+            return redirect('adminp/dashboard_entrepreneur.html' if not is_admin else 'Dashboard')  
+    else:
+        form = checkForm(instance=bien)
+    return render(request, 'adminp/dash.html', {'form': form, 'bien': bien})
+

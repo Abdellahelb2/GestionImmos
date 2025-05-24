@@ -835,7 +835,23 @@ footer::before {
             {% if user.status != 'admin' %}
             <li><a href="{% url 'my_favoris' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Mes favoris</a></li> 
             {% endif %}
-            <li> <a href="{% url 'inbox' %}"> Messages</a></li>    
+            <li>
+  <a href="{% url 'inbox' %}">
+    Messages
+    {% if unread_message_count > 0 %}
+      <span class="badge">{{ unread_message_count }}</span>
+    {% endif %}
+  </a>
+</li>
+<style>.badge {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 7px;
+  font-size: 0.75rem;
+  margin-left: 5px;
+}
+</style>    
             {% if user == x.user.user or user.status == 'admin' or user.status == 'entrepreneur' %}
             <a href="{% url 'dashboard_entrepreneur' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">
              Gérer les réservations</a>

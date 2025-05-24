@@ -28,6 +28,14 @@ class ReservationForm(forms.ModelForm):
         return date
 
 
+class checkForm(forms.ModelForm):
+    class Meta:
+        model = BienImmo
+        fields = [
+            'active', 
+        ]
+
+
 class BienImmoForm(forms.ModelForm):
     class Meta:
         model = BienImmo
@@ -42,7 +50,6 @@ class BienImmoForm(forms.ModelForm):
             'image3', 
             'image4', 
             'image5',
-            'active'
            
         ]
 
