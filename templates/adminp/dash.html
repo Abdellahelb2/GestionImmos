@@ -226,7 +226,7 @@ h2 {
     <form method="post" action="{% url 'update_bien_status' bien.id %}">
       {% csrf_token %}
       {{ check_forms.bien.id.as_p }}
-      <button type="submit" class="bg-blue-500 text-white px-2 py-1 mt-2">Mettre à jour</button>
+      <button type="submit" class="bg-blue-500 text-white px-2 py-1 mt-2">Desactiver l'annonce</button>
     </form>
   </div>
 {% endfor %}

@@ -357,9 +357,19 @@ def traiter_reservation(request, reservation_id, action):
 
 @login_required
 def dashboard_entrepreneur(request):
-    reservations = Reservation.objects.filter(bien__user__user=request.user).order_by('-reservation_date')
+    try:
+        entrepreneur_instance = entrepreneur.objects.get(user=request.user)
+    except entrepreneur.DoesNotExist:
+        return HttpResponseForbidden("🚫 Vous n'êtes pas un entrepreneur.")
+
+    biens = BienImmo.objects.filter(user=entrepreneur_instance).order_by('-id')
+    reservations = Reservation.objects.filter(bien__in=biens).order_by('-reservation_date')
+    check_forms = {bien.id: checkForm(instance=bien) for bien in biens}
+
     return render(request, 'adminp/dashboard_entrepreneur.html', {
-        'reservations': reservations
+        'reservations': reservations,
+        'biens': biens,
+        'check_forms': check_forms,
     })
 
 
@@ -397,7 +407,7 @@ def update_bien_status(request, id):
             form.save()
             messages.success(request, "✅ Statut du bien mis à jour.")
            
-            return redirect('adminp/dashboard_entrepreneur.html' if not is_admin else 'Dashboard')  
+            return redirect('dashboard_entrepreneur' if not is_admin else 'Dashboard')  
     else:
         form = checkForm(instance=bien)
     return render(request, 'adminp/dash.html', {'form': form, 'bien': bien})
