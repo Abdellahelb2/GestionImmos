@@ -80,7 +80,6 @@ def Register(request):
             form = CustomUserCreationForm()
         return render(request, 'registration/register.html', {"form": form})
 
-
 def Loginpage(request):
         if request.method == 'POST':
             username = request.POST.get('username')  

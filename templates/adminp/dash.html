@@ -1,320 +1,607 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-  :root {
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --secondary-color: #10b981;
-    --accent-color: #f43f5e;
-    --success-color: #3b82f6;
-    --dark-color: #111827;
-    --darker-color: #030712;
-    --light-color: #f9fafb;
-    --light-gray: #f3f4f6;
-    --medium-gray: #9ca3af;
-    --dark-gray: #4b5563;
-    --text-color: #1f2937;
-    --light-text: #ffffff;
-    --border-color: #e5e7eb;
-  }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+/* Variables de couleurs pour cohérence */
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #10b981;
+  --accent-color: #f43f5e;
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --dark-color: #111827;
+  --light-color: #f8fafc;
+  --light-gray: #f1f5f9;
+  --medium-gray: #64748b;
+  --dark-gray: #475569;
+  --text-color: #1e293b;
+  --border-color: #e2e8f0;
+  --white: #ffffff;
+  
+  /* Ombres */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition: all 0.3s ease;
+}
 
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.biens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--light-gray);
+  color: var(--text-color);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+/* Container principal */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header principal */
+.dashboard-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Section headers */
+.section-header {
+  margin: 32px 0 24px 0;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* Container pour les cartes */
+.users-grid {
+  display: block; /* Changé de grid à block */
+  margin-bottom: 40px;
+}
+
+.biens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Cartes utilisateurs - Layout en liste */
+.user-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px; /* Espacement entre les cartes */
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+/* Avatar utilisateur */
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  margin-bottom: 0; /* Reset margin */
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex-shrink: 0;
+}
+
+.user-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 2px;
+}
+
+.user-email {
+  color: var(--medium-gray);
+  font-size: 0.875rem;
+}
+
+/* Détails utilisateur en ligne */
+.user-details {
+  display: flex;
+  gap: 32px;
+  flex-grow: 1;
+  align-items: center;
+  margin: 0; /* Reset margin */
+  padding: 0; /* Reset padding */
+  background: none; /* Reset background */
+  border: none; /* Reset border */
+  border-radius: 0; /* Reset border-radius */
+}
+
+.user-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-detail-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--medium-gray);
+  font-weight: 500;
+}
+
+.user-detail-value {
+  font-weight: 500;
+  color: var(--dark-color);
+  font-size: 0.875rem;
+}
+
+.user-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--success-color);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Boutons d'action */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  margin: 0; /* Reset margin */
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 100px;
+}
+
+.btn-modify {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-modify:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #e11d48;
+  transform: translateY(-1px);
+}
+
+/* Cartes biens immobiliers */
+.bien-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.bien-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bien-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.bien-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.bien-card:hover .bien-image {
+  transform: scale(1.05);
+}
+
+.bien-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--medium-gray);
+  font-weight: 500;
+}
+
+.bien-status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-available {
+  background: var(--success-color);
+  border-radius: 12px;
+  color: white;
+}
+
+.status-unavailable {
+  background: var(--accent-color);
+  border-radius: 12px;
+  color: white;
+}
+
+.bien-content {
+  padding: 20px;
+}
+
+.bien-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.bien-actions {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 16px;
+}
+
+.bien-actions button {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.bien-actions button:hover {
+  background: #e11d48;
+  transform: translateY(-1px);
+}
+
+/* Heart icon */
+.favorite-heart {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.favorite-heart:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.favorite-heart::after {
+  content: '🤍';
+  font-size: 1.2rem;
+}
+
+/* États vides */
+.empty-state {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--white);
+  border-radius: 12px;
+  border: 2px dashed var(--border-color);
+}
+
+.bien-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 4px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+}
+
+.bien-address {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--medium-gray);
+  margin-bottom: 12px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  padding-left: 2px;
+  border-left: 3px solid var(--primary-light);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 1.125rem;
+  color: var(--dark-gray);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: var(--medium-gray);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .biens-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .user-details {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
   body {
-    font-family: 'Inter', sans-serif;
-    background: var(--light-gray);
-    color: var(--text-color);
-    line-height: 1.6;
+    padding: 16px;
   }
-
-  .admin-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 2rem;
-  }
-
+  
   .dashboard-header {
-    background: var(--primary-color);
-    color: var(--light-text);
-    padding: 2rem;
-    border-radius: 1rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
   }
-
+  
   .dashboard-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-  }
-
-  h2 {
     font-size: 1.75rem;
-    margin: 2rem 0 1rem;
-    color: var(--primary-dark);
   }
-
-  .data-table {
+  
+  .user-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .user-details {
     width: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--border-color);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    background: var(--light-color);
-  }
-
-  .data-table th,
-  .data-table td {
-    padding: 1rem;
-    text-align: left;
-  }
-
-  .data-table th {
-    background: var(--primary-dark);
-    color: var(--light-text);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-
-  .data-table tbody tr:nth-child(even) {
-    background: var(--light-gray);
-  }
-
-  .data-table tbody tr:hover {
-    background: var(--primary-light);
-    color: var(--light-text);
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .btn-modify {
-    background: var(--success-color);
-    color: var(--light-text);
-  }
-
-  .btn-modify:hover {
-    background: #2563eb;
-  }
-
-  .btn-delete {
-    background: var(--accent-color);
-    color: var(--light-text);
-  }
-
-  .btn-delete:hover {
-    background: #e11d48;
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .data-list {
-    list-style: none;
-    margin: 1rem 0;
-    padding: 0;
-    background: var(--light-color);
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  .data-list li {
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
     justify-content: space-between;
-    align-items: center;
   }
-
-  .data-list li:last-child {
-    border-bottom: none;
-  }
-
-  .company-badge {
-    background: var(--primary-light);
-    color: var(--light-text);
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-
-  .empty-list {
-    text-align: center;
-    padding: 2rem;
-    color: var(--medium-gray);
-    font-style: italic;
-  }
-
-  .bien-card {
-    background: var(--light-color);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 2rem 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .bien-card h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--primary-dark);
-  }
-
-  .bien-image {
+  
+  .action-buttons {
     width: 100%;
-    max-width: 300px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
-    margin-bottom: 1rem;
+    justify-content: stretch;
   }
-
-  .bien-image-placeholder {
-    width: 100%;
-    max-width: 300px;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, var(--light-gray), var(--medium-gray));
-    color: var(--dark-gray);
-    border-radius: 0.75rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
+  
+  .btn {
+    flex: 1;
   }
-
-  .status-available {
-    color: var(--secondary-color);
-    font-weight: 600;
+  
+  .biens-grid {
+    grid-template-columns: 1fr;
   }
+}
 
-  .status-unavailable {
-    color: var(--medium-gray);
-    font-weight: 600;
+@media (max-width: 640px) {
+  .user-details {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
   }
-
-  @media (max-width: 768px) {
-    .dashboard-header h1 {
-      font-size: 2rem;
-    }
-
-    .data-table th,
-    .data-table td {
-      padding: 0.75rem;
-    }
-
-    .btn {
-      font-size: 0.75rem;
-      padding: 0.5rem;
-    }
-
-    .bien-image,
-    .bien-image-placeholder {
-      max-width: 100%;
-      height: auto;
-    }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
   }
-</style>
+}
 
+/* Animations */
+.user-card, .bien-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states pour l'accessibilité */
+.btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.bien-actions button:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+    </style>
 
 <div class="admin-container">
   <div class="dashboard-header">
     <h1>🛠️ Admin Dashboard</h1>
   </div>
 
-  <h2>📋 Tous les utilisateurs</h2>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nom d'utilisateur</th>
-        <th>Email</th>
-        <th>Inscrit le</th>
-        <th>Action</th>
-        <th>Role</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
-        <td class="action-buttons">
-          <a href="#" class="btn btn-modify">Modify</a>
-          <a href="#" class="btn btn-delete">Delete</a>
-        </td>
-        <td>{{ user.status }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="section-header">
+    <h2>👥 Tous les utilisateurs</h2>
+  </div>
 
-  <h2>👨‍💼 Entrepreneurs</h2>
-  <ul class="data-list">
-    {% for e in entrepreneurs %}
-      <li>{{ e.user.username }} <span class="company-badge">{{ e.entreprise }}</span></li>
-    {% empty %}
-      <li class="empty-list">Aucun entrepreneur</li>
+  <div class="users-grid">
+    {% for user in users %}
+      <div class="user-card">
+        <div class="user-header">
+          <div class="user-avatar">JD</div>
+          <div class="user-info">
+            <h3>{{ user.username }}</h3>
+            <div class="user-email">{{ user.email }}</div>
+          </div>
+        </div>
+        <div class="user-details">
+          <div class="user-detail">
+            <span class="user-detail-label">ID</span>
+            <span class="user-detail-value">{{ user.id }}</span>
+          </div>
+          <div class="user-detail">
+            <span class="user-detail-label">Inscrit le</span>
+            <span class="user-detail-value">{{ user.date_joined|date:"Y-m-d H:i" }}</span>
+          </div>
+          <div class="user-detail">
+            <span class="user-detail-label">Statut</span>
+            <span class="user-status">{{ user.status }}</span>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <a href="#" class="btn btn-modify">✏️ Modifier</a>
+          <a href="#" class="btn btn-delete">🗑️ Supprimer</a>
+        </div>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 
-  <h2>🙋 Clients</h2>
-  <ul class="data-list">
-    {% for c in clients %}
-      <li>{{ c.user.username }}</li>
-    {% empty %}
-      <li class="empty-list">Aucun client</li>
-    {% endfor %}
-  </ul>
 
-  {% for bien in biens %}
-    <div class="bien-card">
-      <h3>{{ bien.name }}</h3>
-      {% if bien.image1 %}
-        <img src="{{ bien.image1.url }}" alt="Image de bien" class="bien-image">
-      {% else %}
-        <div class="bien-image-placeholder">Image non disponible</div>
-      {% endif %}
-      <p>Statut : 
-        {% if bien.active %}
-          <span class="status-available">Disponible</span>
-        {% else %}
-          <span class="status-unavailable">Non disponible</span>
-        {% endif %}
-      </p>
-
-      {% if bien.active %}
-      <form method="post" action="{% url 'update_bien_status' bien.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-delete">Désactiver l'annonce</button>
-      </form>
-      {% endif %}
-    </div>
-  {% endfor %}
+  
+<div class="dashboard-header">
+    <h1>🏠 Gestion des annonces</h1>
 </div>
-
-{% endblock content %}
+  <div class="biens-grid">
+    {% for bien in biens %}
+      <div class="bien-card">
+        <div class="bien-image-container">
+          <p>Statut :
+            {% if bien.active %}
+              <span class="status-available">Disponible</span>
+            {% else %}
+              <span class="status-unavailable">Non disponible</span>
+            {% endif %}
+          </p>
+          {% if bien.image1 %}
+            <img src="{{ bien.image1.url }}" alt="Image du bien" class="bien-image">
+          {% else %}
+            <div class="bien-image-placeholder">Image non disponible</div>
+          {% endif %}
+        </div>
+        <div class="bien-content">
+         <h3 class="bien-title">{{ bien.name }}</h3>
+         <h3 class="bien-address">{{ bien.address }}</h3>
+          <div class="bien-actions">
+            {% if bien.active %}
+              <form method="post" action="{% url 'update_bien_status' bien.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-delete">Désactiver l'annonce</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock  %}
