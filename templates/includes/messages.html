@@ -1,0 +1,152 @@
+{% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+      <div class="flash-message
+        {% if message.tags == 'success' %} success
+        {% elif message.tags == 'error' or message.tags == 'danger' %} error
+        {% elif message.tags == 'info' %} info
+        {% elif message.tags == 'warning' %} warning
+        {% else %} default
+        {% endif %}">
+        {{ message }}
+        <button class="close-btn" aria-label="Close message">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<style>
+  .flash-messages {
+    position: fixed;
+    top: 150px; 
+    left: 0;
+    right: 0;
+    z-index: 999;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .flash-message {
+    position: relative;
+    border-radius: 4px;
+    padding: 12px 40px 12px 20px;
+    margin-bottom: 10px;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: slideDown 0.3s ease-out;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+  }
+  
+  .flash-message.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  .success {
+    background-color: #4CAF50;
+    border-left: 4px solid #388E3C;
+  }
+  
+  .error {
+    background-color: #F44336;
+    border-left: 4px solid #D32F2F;
+  }
+  
+  .info {
+    background-color: #2196F3;
+    border-left: 4px solid #1976D2;
+  }
+  
+  .warning {
+    background-color: #FF9800;
+    border-left: 4px solid #F57C00;
+  }
+  
+  .default {
+    background-color: #607D8B;
+    border-left: 4px solid #455A64;
+  }
+  
+  .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+  }
+  
+  .close-btn:hover {
+    opacity: 0.8;
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const flashMessages = document.querySelectorAll('.flash-message');
+    const autoDismissDelay = 5000; // 5 seconds
+    
+    flashMessages.forEach(message => {
+      let dismissTimer = setTimeout(() => {
+        dismissMessage(message);
+      }, autoDismissDelay);
+      
+      // Add click handler for close button
+      const closeBtn = message.querySelector('.close-btn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          clearTimeout(dismissTimer);
+          dismissMessage(message);
+        });
+      }
+      
+      // Pause auto-dismiss on hover
+      message.addEventListener('mouseenter', () => {
+        clearTimeout(dismissTimer);
+      });
+      
+      // Resume auto-dismiss when mouse leaves
+      message.addEventListener('mouseleave', () => {
+        dismissTimer = setTimeout(() => {
+          dismissMessage(message);
+        }, autoDismissDelay);
+      });
+    });
+    
+    function dismissMessage(message) {
+      message.classList.add('fade-out');
+      
+      // Wait for the fade-out transition to complete before removing
+      message.addEventListener('transitionend', function handler() {
+        message.remove();
+        message.removeEventListener('transitionend', handler);
+        
+        // Remove the flash-messages container if no messages left
+        const container = document.querySelector('.flash-messages');
+        if (container && container.children.length === 0) {
+          container.remove();
+        }
+      });
+    }
+  });
+</script>

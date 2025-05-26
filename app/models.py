@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
         ('visiteur','visiteur')
     ]
     status = models.CharField(max_length=50, default='visiteur', choices=status)
-    profile_picture = models.ImageField(upload_to='locataire_profile_pics/',default='locataire_profile_pics/car-rental-vector-13423582.png', null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='locataire_profile_pics/',default='locataire_profile_pics/Default.jpg', null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)

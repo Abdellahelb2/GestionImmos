@@ -11,7 +11,6 @@ urlpatterns = [
     path('contact/', views.Con, name='Contact'),
     path('login/', views.Loginpage, name='Loginpage'),
     path('registeruser/',views.Register,name='Register'),
-    path('main/',views.main,name='main'),
     path('logout/',views.logout,name='logout'),
     path('login/', views.Loginpage, name='Loginpage'),
     path('<int:id>',views.product_detail,name='Product' ),

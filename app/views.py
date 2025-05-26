@@ -59,12 +59,11 @@ def Con(request):
                 messages.error(request, 'An error occurred while sending the message.')
 
         return render(request, 'pages/Contact.html')
-def main(request):
-        return render(request, 'pages/main.html')
+
 def logout(request):
         logoutuser(request)
         messages.info(request, "🔵 You have been logged out!")
-        return redirect('main')
+        return redirect('SayHello')
 
 def Register(request):
         if request.method == "POST":
@@ -90,10 +89,10 @@ def Loginpage(request):
             if user is not None:
                 loginuser(request, user)
                 messages.success(request, "🟢 You are now logged in!")
-                return redirect('main') 
+                return redirect('SayHello') 
             else:
                 messages.error(request, "❌ Invalid username or password!")
-                return redirect('main')
+                return redirect('SayHello')
         return render(request, 'registration/login.html')
 
 
