@@ -1,13 +1,13 @@
-    {% extends 'base.html' %}
-    {% load static %}
-    {% block content %}
-    <div class="page-container">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-container">
     <h2>Réservations en attente</h2>
     
     {% if reservations %}
-        <ul class="reservation-list">
+    <ul class="reservation-list">
         {% for r in reservations %}
-            <li class="reservation-item">
+        <li class="reservation-item">
             <p><strong>Bien :</strong> {{ r.bien.name }}</p>
             <p><strong>Client :</strong> {{ r.client.user.username }}</p>
             <p><strong>CIN :</strong> {{ r.client.user.Carteid }}</p>
@@ -17,7 +17,6 @@
             {% if r.status == 'en_attente' %}
             <a href="{% url 'traiter_reservation' r.id 'accepter' %}" class="btn btn-success">✅ Accepter</a>
             <a href="{% url 'traiter_reservation' r.id 'refuser' %}" class="btn btn-danger">❌ Refuser</a>
-            
             {% else %}
             <a href="{% url 'traiter_reservation' r.id 'annuler' %}" class="btn btn-danger">❌ Annuler</a>
             <span class="status-label {{ r.status }}">{{ r.get_status_display }}</span>
@@ -28,33 +27,31 @@
     {% else %}
     <p>Aucune réservation en attente.</p>
     {% endif %}
-
+{% if user.status != 'admin' %}
     {% for bien in biens %}
-    <div class="border p-4 my-4">
+    <div class="property-card">
         <h3 class="text-lg font-bold">{{ bien.name }}</h3>
         {% if bien.image1 %}
         <img src="{{ bien.image1.url }}" alt="{{ bien.name }}" class="bien-image" />
-    {% endif %}
-        <p>Statut : 
-        {% if bien.active %}
-            <span class="text-green-600">Disponible</span>
-        {% else %}
-            <span class="text-gray-500">Non disponible</span>
         {% endif %}
+        <p>Statut : 
+            {% if bien.active %}
+            <span class="text-green-600">Disponible</span>
+            {% else %}
+            <span class="text-gray-500">Non disponible</span>
+            {% endif %}
         </p>
-
+        {% if bien.active %}
         <form method="post" action="{% url 'update_bien_status' bien.id %}">
-        {% csrf_token %}
-        {{ check_forms.bien.id.as_p }}
-        <button type="submit" class="bg-blue-500 text-white px-2 py-1 mt-2">Desactiver l'annonce</button>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-blue">Désactiver l'annonce</button>
         </form>
+        {% endif %}
     </div>
     {% endfor %}
-    <style>
-
-    /* Professional Reservation Management Styles */
-
-/* Page Container */
+</div>
+{% endif %}
+<style>
 .page-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -169,22 +166,26 @@
     box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
 }
 
-.btn-success:hover {
-    background: linear-gradient(135deg, #059669, #047857);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.4);
-}
-
 .btn-danger {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
 }
 
-.btn-danger:hover {
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
+.btn-blue {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover, .btn-danger:hover, .btn-blue:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px 0 rgba(239, 68, 68, 0.4);
+    box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.4);
 }
 
 /* Status Labels */
@@ -218,7 +219,7 @@
 }
 
 /* Property Cards */
-.border {
+.property-card {
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
@@ -228,7 +229,7 @@
     transition: all 0.3s ease;
 }
 
-.border:hover {
+.property-card:hover {
     box-shadow: 0 8px 25px -3px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
 }
@@ -248,48 +249,11 @@
     transform: scale(1.02);
 }
 
-/* Status Text */
-.text-green-600 {
-    color: #059669;
-    font-weight: 600;
-    background: #d1fae5;
-    padding: 0.25rem 0.75rem;
-    border-radius: 16px;
-    font-size: 0.875rem;
-}
-
-.text-gray-500 {
-    color: #6b7280;
-    font-weight: 600;
-    background: #f3f4f6;
-    padding: 0.25rem 0.75rem;
-    border-radius: 16px;
-    font-size: 0.875rem;
-}
-
 /* Form Styles */
 form {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
-}
-
-.bg-blue-500 {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
-}
-
-.bg-blue-500:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.4);
 }
 
 /* Empty State */
@@ -309,15 +273,15 @@ form {
     .page-container {
         padding: 1rem;
     }
-    
+
     .page-container h2 {
         font-size: 1.875rem;
     }
-    
-    .reservation-item {
+
+    .property-card {
         padding: 1.5rem;
     }
-    
+
     .btn {
         padding: 0.625rem 1.25rem;
         font-size: 0.875rem;
@@ -325,11 +289,7 @@ form {
         display: block;
         text-align: center;
     }
-    
-    .border {
-        padding: 1.5rem;
-    }
-    
+
     .bien-image {
         max-width: 100%;
     }
@@ -340,13 +300,13 @@ form {
         display: block;
         margin-bottom: 0.25rem;
     }
-    
+
     .status-label {
         display: block;
         text-align: center;
         margin: 0.5rem 0;
     }
 }
-    </style>
+</style>
 
-    {% endblock %}
+{% endblock %}

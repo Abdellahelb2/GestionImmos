@@ -513,7 +513,7 @@ h1 {
 }
 
 </style> 
-{% if user.is_authenticated %}
+
 <div class="filter-bar my-8 text-center">
   <div class="filter-links">
     <a href="?type=a vendre" class="filter-link sell">À vendre</a>
@@ -542,7 +542,7 @@ h1 {
     {% endif %}
   </div>
 </div>
-{% endif %}
+
 
   <div class="product-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for x in house %}

@@ -2,167 +2,247 @@
 
 {% block content %}
 <style>
-/* Variables de couleurs */
-:root {
-  --primary-color: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #818cf8;
-  --secondary-color: #10b981;
-  --accent-color: #f43f5e;
-  --success-color: #3b82f6;
-  --dark-color: #111827;
-  --darker-color: #030712;
-  --light-color: #f9fafb;
-  --light-gray: #f3f4f6;
-  --medium-gray: #9ca3af;
-  --dark-gray: #4b5563;
-  --text-color: #1f2937;
-  --light-text: #ffffff;
-}
+  :root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary-color: #10b981;
+    --accent-color: #f43f5e;
+    --success-color: #3b82f6;
+    --dark-color: #111827;
+    --darker-color: #030712;
+    --light-color: #f9fafb;
+    --light-gray: #f3f4f6;
+    --medium-gray: #9ca3af;
+    --dark-gray: #4b5563;
+    --text-color: #1f2937;
+    --light-text: #ffffff;
+    --border-color: #e5e7eb;
+  }
 
-/* Style général de la page */
-.admin-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 25px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-color);
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-/* Titres */
-h1 {
-  color: var(--primary-dark);
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 30px;
-  padding-bottom: 12px;
-  border-bottom: 3px solid var(--primary-light);
-}
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--light-gray);
+    color: var(--text-color);
+    line-height: 1.6;
+  }
 
-h2 {
-  color: var(--secondary-color);
-  font-size: 1.5rem;
-  margin-top: 35px;
-  margin-bottom: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-}
+  .admin-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+  }
 
-/* Tableau des utilisateurs */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  background-color: var(--light-color);
-  border-radius: 8px;
-  overflow: hidden;
-}
+  .dashboard-header {
+    background: var(--primary-color);
+    color: var(--light-text);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 
-.data-table th {
-  background-color: var(--primary-color);
-  color: var(--light-text);
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
-}
+  .dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
 
-.data-table tr:nth-child(even) {
-  background-color: var(--light-gray);
-}
+  h2 {
+    font-size: 1.75rem;
+    margin: 2rem 0 1rem;
+    color: var(--primary-dark);
+  }
 
-.data-table td {
-  padding: 10px 15px;
-  border-bottom: 1px solid var(--medium-gray);
-}
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    background: var(--light-color);
+  }
 
-.data-table tr:last-child td {
-  border-bottom: none;
-}
+  .data-table th,
+  .data-table td {
+    padding: 1rem;
+    text-align: left;
+  }
 
-.data-table tr:hover {
-  background-color: rgba(99, 102, 241, 0.05);
-}
+  .data-table th {
+    background: var(--primary-dark);
+    color: var(--light-text);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
 
-/* Statut des utilisateurs */
-.status-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
+  .data-table tbody tr:nth-child(even) {
+    background: var(--light-gray);
+  }
 
-.status-active {
-  background-color: var(--secondary-color);
-  color: var(--light-text);
-}
+  .data-table tbody tr:hover {
+    background: var(--primary-light);
+    color: var(--light-text);
+  }
 
-.status-inactive {
-  background-color: var(--medium-gray);
-  color: var(--light-text);
-}
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+  }
 
-.status-pending {
-  background-color: var(--accent-color);
-  color: var(--light-text);
-}
+  .btn-modify {
+    background: var(--success-color);
+    color: var(--light-text);
+  }
 
-/* Listes */
-.data-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background-color: var(--light-color);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+  .btn-modify:hover {
+    background: #2563eb;
+  }
 
-.data-list li {
-  padding: 12px 15px;
-  border-bottom: 1px solid var(--light-gray);
-  display: flex;
-  align-items: center;
-}
+  .btn-delete {
+    background: var(--accent-color);
+    color: var(--light-text);
+  }
 
-.data-list li:last-child {
-  border-bottom: none;
-}
+  .btn-delete:hover {
+    background: #e11d48;
+  }
 
-.data-list li:hover {
-  background-color: rgba(99, 102, 241, 0.05);
-}
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
 
-.data-list .empty-list {
-  color: var(--medium-gray);
-  font-style: italic;
-  text-align: center;
-  padding: 20px;
-}
+  .data-list {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0;
+    background: var(--light-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
 
-/* Séparateur de sections */
-.section-divider {
-  height: 1px;
-  background-color: var(--light-gray);
-  margin: 30px 0;
-}
+  .data-list li {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-/* Badge d'entreprise */
-.company-badge {
-  background-color: var(--primary-light);
-  color: var(--light-text);
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-left: 10px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
+  .data-list li:last-child {
+    border-bottom: none;
+  }
+
+  .company-badge {
+    background: var(--primary-light);
+    color: var(--light-text);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .empty-list {
+    text-align: center;
+    padding: 2rem;
+    color: var(--medium-gray);
+    font-style: italic;
+  }
+
+  .bien-card {
+    background: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .bien-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .bien-image {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+  }
+
+  .bien-image-placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--light-gray), var(--medium-gray));
+    color: var(--dark-gray);
+    border-radius: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .status-available {
+    color: var(--secondary-color);
+    font-weight: 600;
+  }
+
+  .status-unavailable {
+    color: var(--medium-gray);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-header h1 {
+      font-size: 2rem;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 0.75rem;
+    }
+
+    .btn {
+      font-size: 0.75rem;
+      padding: 0.5rem;
+    }
+
+    .bien-image,
+    .bien-image-placeholder {
+      max-width: 100%;
+      height: auto;
+    }
+  }
 </style>
 
+
 <div class="admin-container">
-  <h1>🛠️ Admin Dashboard</h1>
+  <div class="dashboard-header">
+    <h1>🛠️ Admin Dashboard</h1>
+  </div>
 
   <h2>📋 Tous les utilisateurs</h2>
   <table class="data-table">
@@ -173,7 +253,7 @@ h2 {
         <th>Email</th>
         <th>Inscrit le</th>
         <th>Action</th>
-        <th>role</th>
+        <th>Role</th>
       </tr>
     </thead>
     <tbody>
@@ -183,53 +263,58 @@ h2 {
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
-        <td><button style="border: #030712 solid;padding:5px 5px 5px 5px;text-decoration: none ;"><a href="">Modify</a></button>.<button style="border: #030712 solid;padding:5px 5px 5px 5px ;text-decoration: none ;"><a href="">Delete</a></button></td>
+        <td class="action-buttons">
+          <a href="#" class="btn btn-modify">Modify</a>
+          <a href="#" class="btn btn-delete">Delete</a>
+        </td>
         <td>{{ user.status }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-    <div class="section-divider"></div>
+  <h2>👨‍💼 Entrepreneurs</h2>
+  <ul class="data-list">
+    {% for e in entrepreneurs %}
+      <li>{{ e.user.username }} <span class="company-badge">{{ e.entreprise }}</span></li>
+    {% empty %}
+      <li class="empty-list">Aucun entrepreneur</li>
+    {% endfor %}
+  </ul>
 
-    <h2>👨‍💼 Entrepreneurs</h2>
-    <ul class="data-list">
-        {% for e in entrepreneurs %}
-        <li>{{ e.user.username }} <span class="company-badge">{{ e.entreprise }}</span></li>
-        {% empty %}
-        <li class="empty-list">Aucun entrepreneur</li>
-        {% endfor %}
-    </ul>
+  <h2>🙋 Clients</h2>
+  <ul class="data-list">
+    {% for c in clients %}
+      <li>{{ c.user.username }}</li>
+    {% empty %}
+      <li class="empty-list">Aucun client</li>
+    {% endfor %}
+  </ul>
 
-    <div class="section-divider"></div>
-
-    <h2>🙋 Clients</h2>
-    <ul class="data-list">
-        {% for c in clients %}
-        <li>{{ c.user.username }}</li>
-        {% empty %}
-        <li class="empty-list">Aucun client</li>
-        {% endfor %}
-    </ul>
-
-{% for bien in biens %}
-  <div class="border p-4 my-4">
-    <h3 class="text-lg font-bold">{{ bien.name }}</h3>
-    <p>Statut : 
-      {% if bien.active %}
-        <span class="text-green-600">Disponible</span>
+  {% for bien in biens %}
+    <div class="bien-card">
+      <h3>{{ bien.name }}</h3>
+      {% if bien.image1 %}
+        <img src="{{ bien.image1.url }}" alt="Image de bien" class="bien-image">
       {% else %}
-        <span class="text-gray-500">Non disponible</span>
+        <div class="bien-image-placeholder">Image non disponible</div>
       {% endif %}
-    </p>
+      <p>Statut : 
+        {% if bien.active %}
+          <span class="status-available">Disponible</span>
+        {% else %}
+          <span class="status-unavailable">Non disponible</span>
+        {% endif %}
+      </p>
 
-    <form method="post" action="{% url 'update_bien_status' bien.id %}">
-      {% csrf_token %}
-      {{ check_forms.bien.id.as_p }}
-      <button type="submit" class="bg-blue-500 text-white px-2 py-1 mt-2">Desactiver l'annonce</button>
-    </form>
-  </div>
-{% endfor %}
-
+      {% if bien.active %}
+      <form method="post" action="{% url 'update_bien_status' bien.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-delete">Désactiver l'annonce</button>
+      </form>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
 
 {% endblock content %}
