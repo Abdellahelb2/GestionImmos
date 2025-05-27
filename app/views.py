@@ -17,6 +17,7 @@ from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageFo
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 
     # Pages
 def SayHello(request):
@@ -425,7 +426,7 @@ def update_user_status(request, user_id):
         form = UserStatusForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('SayHello')  
+            return redirect('Dashboard')
     else:
         form = UserStatusForm(instance=user)
     
