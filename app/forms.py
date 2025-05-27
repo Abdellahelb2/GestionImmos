@@ -124,3 +124,11 @@ class UserStatusForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['status']
+    def __init__(self, *args, **kwargs):
+        super(UserStatusForm, self).__init__(*args, **kwargs)
+        # List of statuses you want to exclude
+        excluded_statuses = ['admin', 'visiteur']  # replace with actual status values
+        self.fields['status'].choices = [
+            (value, label) for value, label in self.fields['status'].choices
+            if value not in excluded_statuses
+        ]
