@@ -118,3 +118,9 @@ class MessageForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Écrivez votre message...'})
         }
+
+
+class UserStatusForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['status']

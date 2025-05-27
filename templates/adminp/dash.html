@@ -550,6 +550,10 @@ body {
             <span class="user-detail-value">{{ user.id }}</span>
           </div>
           <div class="user-detail">
+            <span class="user-detail-label">CIn</span>
+            <span class="user-detail-value">{{ user.Carteid }}</span>
+          </div>
+          <div class="user-detail">
             <span class="user-detail-label">Inscrit le</span>
             <span class="user-detail-value">{{ user.date_joined|date:"Y-m-d H:i" }}</span>
           </div>
@@ -559,7 +563,7 @@ body {
           </div>
         </div>
         <div class="action-buttons">
-          <a href="#" class="btn btn-modify">✏️ Modifier</a>
+          <a href="{% url 'update_user_status' user.id %}" class="btn btn-modify">✏️ Modifier</a>
           <a href="#" class="btn btn-delete">🗑️ Supprimer</a>
         </div>
       </div>

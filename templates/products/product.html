@@ -714,7 +714,7 @@ body {
 {% if x.user and x.user.user == user and user.status == 'entrepreneur' %}
   <a class="btn btn-outline" href="{% url 'bien_modifier' x.id %}">Modifier</a>
 {% endif %}
-{% if user.status == 'admin' %}
+{% if user.status == 'admin' or x.user.user == user %}
  <button class="btn btn-outline">  <a href="{% url 'bien_supprimer' x.id %} ">Supprimer</a  ></button>
 {% endif %}
 
@@ -741,75 +741,9 @@ body {
       </svg>
       Réserver maintenant
     </button>
-
-    {% if messages %}
-      <div id="alert-container">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
   </form>
 {% endif %}
 </div>
-
-<style>
-  #alert-container {
-  margin-top: 20px;
-}
-
-.alert {
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-  color: #155724;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-  color: #721c24;
-}
-
-#alert-container {
-  position: fixed;
-  top: 80px; /* Distance from the top (ajuste cette valeur selon la hauteur de ta navbar) */
-  left: 50%; /* Centrage horizontal */
-  transform: translateX(-50%); /* Centrage parfait */
-  z-index: 9999; /* Toujours au-dessus */
-  max-width: 80%; /* Largeur maximum, tu peux ajuster */
-  width: auto;
-  text-align: center;
-  opacity: 1;
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-}
-
-.alert {
-  padding: 12px 20px;
-  margin: 8px 0;
-  border-radius: 8px;
-  font-weight: 500;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  animation: fadeOut 0.5s ease-in-out 4.5s forwards; /* Ajout de l'animation */
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-</style>
 <script>
   setTimeout(() => {
     const alertBox = document.getElementById('alert-container');
@@ -817,8 +751,6 @@ body {
       alertBox.remove();
     }
   }, 5000);
-
-  // Image gallery functionality
   let currentImageIndex = 0;
   const images = [
     "{{ x.image1.url }}",
@@ -829,16 +761,11 @@ body {
   ];
 
   function changeMainImage(thumbnail, imageUrl, index) {
-    // Update main image
     document.getElementById('main-image').src = imageUrl;
-    
-    // Update active thumbnail
     document.querySelectorAll('.thumbnail').forEach(thumb => {
       thumb.classList.remove('active');
     });
     thumbnail.classList.add('active');
-    
-    // Update current image index
     currentImageIndex = index;
     document.getElementById('current-image').textContent = index + 1;
   }

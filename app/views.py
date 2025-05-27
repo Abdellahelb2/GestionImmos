@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm,checkForm
+from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm,checkForm,UserStatusForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
@@ -125,7 +125,7 @@ def product_detail(request, id):
                     try:
                         reservation.full_clean()
                         reservation.save()
-                        messages.success(request, "Réservation effectuée avec succès.")
+                        messages.success(request, "Demande de reservation en cours de traitement")
                         return redirect('Product', id=bien.id)
                     except ValidationError:
                         form.add_error('reservation_time', 'Erreur de validation des données.')
@@ -181,14 +181,20 @@ class BienDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = '/product/'  
 
     def test_func(self):
-        return self.request.user.status == 'admin'
+        bien = self.get_object()
+        return self.request.user.status == 'admin' or bien.user.user == self.request.user
     
 @login_required(login_url='/login/')
 def add_product(request):
     if request.user.status == 'client':
-        messages.error(request, "❌ Tu n'as pas de droit d'ajouter un produit ici")
+        messages.error(request, "❌ Tu n'as pas le droit d'ajouter un produit ici.")
         return redirect('Sayhello')
+
     entrepreneur_instance, created = entrepreneur.objects.get_or_create(user=request.user)
+    if not entrepreneur_instance.is_profile_complete():
+        messages.warning(request, "⚠️ Veuillez compléter votre profil avant d’ajouter un produit.")
+        return redirect('SayHello') 
+
     if request.method == 'POST':
         form = BienImmoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -203,6 +209,7 @@ def add_product(request):
         form = BienImmoForm()
 
     return render(request, 'products/add_product.html', {'form': form})
+
     
 @login_required
 def modify_profile(request):
@@ -358,7 +365,8 @@ def dashboard_entrepreneur(request):
     try:
         entrepreneur_instance = entrepreneur.objects.get(user=request.user)
     except entrepreneur.DoesNotExist:
-        return HttpResponseForbidden("🚫 Vous n'êtes pas un entrepreneur.")
+        messages.error(request, "🚫 Vous n'êtes pas un entrepreneur.")
+        return redirect('SayHello')
 
     biens = BienImmo.objects.filter(user=entrepreneur_instance).order_by('-id')
     reservations = Reservation.objects.filter(bien__in=biens).order_by('-reservation_date')
@@ -410,3 +418,15 @@ def update_bien_status(request, id):
         form = checkForm(instance=bien)
     return render(request, 'adminp/dash.html', {'form': form, 'bien': bien})
 
+@staff_member_required(login_url='/login/')  
+def update_user_status(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    if request.method == 'POST':
+        form = UserStatusForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('SayHello')  
+    else:
+        form = UserStatusForm(instance=user)
+    
+    return render(request, 'registration/update_user_status.html', {'form': form, 'user': user})

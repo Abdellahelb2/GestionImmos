@@ -24,6 +24,17 @@ class entrepreneur(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,primary_key=True)  
     entreprise=models.CharField(max_length=50, default='x')
 
+    def is_profile_complete(self):
+        user = self.user
+        required_fields = [
+            user.phone_number,
+            user.date_of_birth,
+            user.address,
+            user.Carteid,
+        ]
+        return all(required_fields)
+
+
 class BienImmo(models.Model):
     x = [
         ('a vendre', 'a vendre'), 
@@ -69,6 +80,9 @@ class Reservation(models.Model):
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='en_attente')
+
+    class Meta:
+        unique_together = ('bien', 'reservation_date', 'reservation_time', 'status')
 
     def __str__(self):
         return f"{self.client.user.username} reserved {self.bien.name} on {self.reservation_date} at {self.reservation_time}"
