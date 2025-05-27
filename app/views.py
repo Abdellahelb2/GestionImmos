@@ -239,7 +239,7 @@ def modify_profile(request):
             form = CustomUserChangeForm(instance=user)
 
         return render(request, 'registration/modify_profile.html', {'form': form})
-
+@login_required
 def profile(request):
         user = request.user
         role_data = None

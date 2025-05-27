@@ -853,8 +853,8 @@ footer::before {
 }
 </style>    
             {% if user == x.user.user or user.status == 'admin' or user.status == 'entrepreneur' %}
-            <a href="{% url 'dashboard_entrepreneur' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">
-             Gérer les réservations</a>
+            <li><a href="{% url 'dashboard_entrepreneur' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">
+             Gérer les réservations</a></li>
             {% endif %}
             {% if user.status == 'admin' %}
                 <li><a href="{% url 'Dashboard' %}" class="block px-4 py-2 text-dark-color hover:bg-light-gray">Dashboard</a></li>
