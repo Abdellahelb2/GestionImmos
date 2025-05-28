@@ -189,7 +189,7 @@ class BienDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 def add_product(request):
     if request.user.status == 'client':
         messages.error(request, "❌ Tu n'as pas le droit d'ajouter un produit ici.")
-        return redirect('Sayhello')
+        return redirect('SayHello')
 
     entrepreneur_instance, created = entrepreneur.objects.get_or_create(user=request.user)
     if not entrepreneur_instance.is_profile_complete():
@@ -202,7 +202,7 @@ def add_product(request):
             product = form.save(commit=False)
             product.user = entrepreneur_instance
             product.save()
-            messages.success(request, "✅ Produit ajouté !")
+            messages.success(request, "✅ Annonce en cours de taitement !")
             return redirect('Products')
         else:
             messages.error(request, "⚠️ Erreur lors de la soumission du formulaire.")
@@ -418,6 +418,32 @@ def update_bien_status(request, id):
     else:
         form = checkForm(instance=bien)
     return render(request, 'adminp/dash.html', {'form': form, 'bien': bien})
+
+
+@login_required
+def activer_bien(request, id):
+    bien = get_object_or_404(BienImmo, id=id)
+
+    is_admin = request.user.is_superuser
+    try:
+        current_entrepreneur = entrepreneur.objects.get(user=request.user)
+        is_owner = bien.user == current_entrepreneur
+    except Entrepreneur.DoesNotExist:
+        is_owner = False
+
+    if not (is_admin or is_owner):
+        return HttpResponseForbidden("🚫 Vous n'avez pas la permission de modifier ce bien.")
+
+    if not bien.active:
+        bien.active = True
+        bien.save()
+        messages.success(request, "✅ Le bien est maintenant marqué comme disponible.")
+    else:
+        messages.info(request, "ℹ️ Le bien est déjà disponible.")
+
+    return redirect('Dashboard' if is_admin else 'dashboard_entrepreneur')
+
+
 
 @staff_member_required(login_url='/login/')  
 def update_user_status(request, user_id):

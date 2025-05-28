@@ -51,8 +51,7 @@ class BienImmo(models.Model):
     image4 = models.ImageField(upload_to='photos/%y/%m/%d', default='photos/25/04/25/pfp.jpg')
     image5 = models.ImageField(upload_to='photos/%y/%m/%d', default='photos/25/04/25/pfp.jpg')
     user = models.ForeignKey(entrepreneur,on_delete=models.CASCADE)   
-    
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     
 

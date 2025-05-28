@@ -30,7 +30,8 @@ urlpatterns = [
     path('reservations/gestion/', views.dashboard_entrepreneur, name='dashboard_entrepreneur'),
     path('bien/<int:bien_id>/status/', views.update_bien_status, name='update_bien_status'),
     path('update-bien/<int:id>/', views.update_bien_status, name='update_bien_status'),
-     path('user/<int:user_id>/status/', views.update_user_status, name='update_user_status'),
+    path('user/<int:user_id>/status/', views.update_user_status, name='update_user_status'),
+    path('bien/<int:id>/activer/', views.activer_bien, name='activer_bien'),
 
 
 
