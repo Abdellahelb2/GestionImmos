@@ -1,0 +1,110 @@
+/* Variables de couleurs */
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #10b981;
+  --accent-color: #f43f5e;
+  --success-color: #3b82f6;
+  --dark-color: #111827;
+  --darker-color: #030712;
+  --light-color: #f9fafb;
+  --light-gray: #f3f4f6;
+  --medium-gray: #9ca3af;
+  --dark-gray: #4b5563;
+  --text-color: #1f2937;
+  --light-text: #ffffff;
+}
+
+/* Style général de la page */
+.inbox-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+}
+
+/* Titre de la boîte de réception */
+h2 {
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--primary-light);
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+/* Style des messages */
+.message-card {
+  background-color: var(--light-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid var(--primary-color);
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.message-meta {
+  margin-bottom: 14px;
+}
+
+.message-label {
+  font-weight: 600;
+  color: var(--dark-gray);
+  margin-right: 5px;
+}
+
+.message-value {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.property-name {
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+.message-preview {
+  color: var(--text-color);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.view-conversation {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.view-conversation:hover {
+  background-color: var(--primary-dark);
+  text-decoration: none;
+}
+
+/* Message d'absence de messages */
+.no-messages {
+  text-align: center;
+  color: var(--medium-gray);
+  font-style: italic;
+  padding: 40px 0;
+  background-color: var(--light-gray);
+  border-radius: 10px;
+}

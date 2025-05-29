@@ -1,0 +1,110 @@
+   
+.app-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+ .app-logo img {
+            max-width: 120px;
+            height: auto;
+        }
+        
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.app-logo {
+    color: #6366f1;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-form-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-group input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #6366f1;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.login-button {
+    background-color: #9333ea;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 10px;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #6905c6;
+}
+
+.register-link {
+    color: #666;
+    font-size: 14px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

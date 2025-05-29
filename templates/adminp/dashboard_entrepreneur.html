@@ -2,6 +2,8 @@
 {% include 'includes/messages.html' %}
 {% load static %}
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'css\dashboard_entrepreneur.css' %}">
 <div class="page-container">
     <h2>Réservations en attente</h2>
     
@@ -29,285 +31,46 @@
     <p>Aucune réservation en attente.</p>
     {% endif %}
 {% if user.status != 'admin' %}
-    {% for bien in biens %}
-    <div class="property-card">
-        <h3 class="text-lg font-bold">{{ bien.name }}</h3>
-        {% if bien.image1 %}
-        <img src="{{ bien.image1.url }}" alt="{{ bien.name }}" class="bien-image" />
-        {% endif %}
-        <p>Statut : 
-            {% if bien.active %}
-            <span class="text-green-600">Disponible</span>
-            {% else %}
-            <span class="text-gray-500">Non disponible</span>
-            {% endif %}
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="dashboard-header">
+  <h1>Gestion des annonces</h1>
+</div>
+
+<div class="biens-grid">
+  {% for bien in biens %}
+    <div class="bien-card">
+      <div class="bien-image-container">
+        <p>Statut :
+          {% if bien.active %}
+            <span class="status-available">Disponible</span>
+          {% else %}
+            <span class="status-unavailable">Non disponible</span>
+          {% endif %}
         </p>
-        {% if bien.active %}
-        <form method="post" action="{% url 'update_bien_status' bien.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-blue">Désactiver l'annonce</button>
-        </form>
+        {% if bien.image1 %}
+          <img src="{{ bien.image1.url }}" alt="Image du bien" class="bien-image">
+        {% else %}
+          <div class="bien-image-placeholder">Image non disponible</div>
         {% endif %}
+      </div>
+      <div class="bien-content">
+        <h3 class="bien-title">{{ bien.name }}</h3>
+        <h3 class="bien-address">{{ bien.address }}</h3>
+        <a href="{% url 'Product' bien.id %}" class="view-details">Voir plus de détails</a>
+        <div class="bien-actions">
+          {% if bien.active %}
+            <form method="post" action="{% url 'update_bien_status' bien.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-delete">Désactiver l'annonce</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    {% endfor %}
+  {% endfor %}
 </div>
 {% endif %}
-<style>
-.page-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: #f8fafc;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
-/* Typography */
-.page-container h2 {
-    color: #1e293b;
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    border-bottom: 3px solid #3b82f6;
-    padding-bottom: 0.75rem;
-    display: inline-block;
-}
-
-.page-container h3 {
-    color: #374151;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-/* Reservation List */
-.reservation-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1.5rem;
-}
-
-.reservation-item {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.reservation-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-}
-
-.reservation-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.reservation-item p {
-    margin: 0.75rem 0;
-    color: #4b5563;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.reservation-item p strong {
-    color: #1f2937;
-    font-weight: 600;
-    display: inline-block;
-    min-width: 100px;
-}
-
-/* Button Styles */
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    margin: 0.5rem 0.5rem 0.5rem 0;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.btn:hover::before {
-    left: 100%;
-}
-
-.btn-success {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
-}
-
-.btn-danger {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
-}
-
-.btn-blue {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-success:hover, .btn-danger:hover, .btn-blue:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.4);
-}
-
-/* Status Labels */
-.status-label {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-left: 1rem;
-}
-
-.status-label.en_attente {
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #f59e0b;
-}
-
-.status-label.accepter {
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #10b981;
-}
-
-.status-label.refuser {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
-}
-
-/* Property Cards */
-.property-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 1.5rem 0;
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-}
-
-.property-card:hover {
-    box-shadow: 0 8px 25px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-}
-
-.bien-image {
-    width: 100%;
-    max-width: 300px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 1rem 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.bien-image:hover {
-    transform: scale(1.02);
-}
-
-/* Form Styles */
-form {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-}
-
-/* Empty State */
-.page-container > p {
-    text-align: center;
-    padding: 3rem;
-    background: white;
-    border-radius: 12px;
-    color: #6b7280;
-    font-size: 1.125rem;
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 2px dashed #d1d5db;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .page-container {
-        padding: 1rem;
-    }
-
-    .page-container h2 {
-        font-size: 1.875rem;
-    }
-
-    .property-card {
-        padding: 1.5rem;
-    }
-
-    .btn {
-        padding: 0.625rem 1.25rem;
-        font-size: 0.875rem;
-        margin: 0.25rem;
-        display: block;
-        text-align: center;
-    }
-
-    .bien-image {
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .reservation-item p strong {
-        display: block;
-        margin-bottom: 0.25rem;
-    }
-
-    .status-label {
-        display: block;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
-}
-</style>
 
 {% endblock %}

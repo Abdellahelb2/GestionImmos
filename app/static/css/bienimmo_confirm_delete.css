@@ -1,0 +1,120 @@
+:root {
+    /* Palette de couleurs */
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary-color: #10b981;
+    --accent-color: #f43f5e;
+    --success-color: #3b82f6;
+    --dark-color: #111827;
+    --darker-color: #030712;
+    --light-color: #f9fafb;
+    --light-gray: #f3f4f6;
+    --medium-gray: #9ca3af;
+    --dark-gray: #4b5563;
+    --text-color: #1f2937;
+    --light-text: #ffffff;
+  }
+
+  /* Conteneur de confirmation */
+  .delete-confirmation-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .delete-confirmation-title {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+  }
+
+  .delete-confirmation-message {
+    font-size: 18px;
+    color: var(--text-color);
+    margin-bottom: 30px;
+  }
+
+  .delete-confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  /* Bouton de suppression */
+  .delete-btn {
+    background-color: var(--accent-color);
+    color: var(--light-text);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+  }
+
+  .delete-btn:hover {
+    background-color: #e11d48;
+  }
+
+  /* Bouton d'annulation */
+  .cancel-btn {
+    background-color: var(--medium-gray);
+    color: var(--light-text);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .cancel-btn:hover {
+    background-color: var(--dark-gray);
+  }
+
+  /* Alerte visuelle */
+  .warning-icon {
+    font-size: 48px;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+  }
+
+  /* Animation légère */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .delete-confirmation-container {
+    animation: pulse 1s ease-in-out;
+  }
+
+  /* Responsive adjustment */
+  @media (max-width: 768px) {
+    .delete-confirmation-container {
+      padding: 20px;
+      margin: 20px auto;
+    }
+    
+    .delete-confirmation-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .delete-btn, .cancel-btn {
+      width: 100%;
+    }
+  }
