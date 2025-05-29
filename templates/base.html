@@ -61,11 +61,12 @@
             {% endif %}
             <li>
   <a href="{% url 'inbox' %}">
-    Messages
-    {% if unread_message_count > 0 %}
-      <span class="badge">{{ unread_message_count }}</span>
-    {% endif %}
-  </a>
+  Messages
+  {% if unread_message_count > 0 %}
+    <span class="badge-notification">{{ unread_message_count }}</span>
+  {% endif %}
+</a>
+
 </li>
     
             {% if user == x.user.user or user.status == 'admin' or user.status == 'entrepreneur' %}
