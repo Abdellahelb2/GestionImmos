@@ -10,8 +10,6 @@ from .models import CustomUser,client,entrepreneur,BienImmo,Reservation,Message,
 from django.core.mail import send_mail
 from django.conf import settings
 from django.db.models import Q
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.contrib import messages
 from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm,checkForm,UserStatusForm
 from django.contrib.admin.views.decorators import staff_member_required
@@ -423,7 +421,7 @@ def update_bien_status(request, id):
 @login_required
 def activer_bien(request, id):
     bien = get_object_or_404(BienImmo, id=id)
-
+    
     is_admin = request.user.is_superuser
     try:
         current_entrepreneur = entrepreneur.objects.get(user=request.user)

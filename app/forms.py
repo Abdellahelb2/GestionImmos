@@ -50,7 +50,6 @@ class BienImmoForm(forms.ModelForm):
             'image3', 
             'image4', 
             'image5',
-           
         ]
 
 

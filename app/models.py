@@ -53,8 +53,6 @@ class BienImmo(models.Model):
     user = models.ForeignKey(entrepreneur,on_delete=models.CASCADE)   
     active = models.BooleanField(default=False)
 
-    
-
     def __str__(self):
         return self.name
 
@@ -119,7 +117,7 @@ class Message(models.Model):
 
 
 class Favoris(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
     bien = models.ForeignKey(BienImmo, on_delete=models.CASCADE, related_name='favori_par')
     date_ajout = models.DateTimeField(auto_now_add=True)
 
