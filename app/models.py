@@ -57,7 +57,7 @@ class BienImmo(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['price']
+        ordering = ['-active', 'price'] 
 
 
 class client(models.Model):

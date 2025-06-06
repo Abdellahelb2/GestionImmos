@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import UpdateView, DeleteView
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.http import HttpResponse,HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404
@@ -9,6 +11,7 @@ from django.contrib import messages
 from .models import CustomUser,client,entrepreneur,BienImmo,Reservation,Message,Favoris
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth import login
 from django.db.models import Q
 from django.contrib import messages
 from .forms import CustomUserCreationForm,BienImmoForm,ReservationForm,MessageForm,CustomUserChangeForm,checkForm,UserStatusForm
@@ -35,29 +38,42 @@ def Said(request):
 
 
     # contact Views
+
+
 def Con(request):
-        if request.method == 'POST':
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            subject = request.POST.get('subject')
-            message = request.POST.get('message')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
 
-            full_message = f"Message from {name} <{email}>:\n\n{message}"
+        try:
+            html_content = render_to_string('email.html', {
+                'name': name,
+                'email': email,
+                'subject': subject,
+                'message': message,
+            })
 
-            try:
-                send_mail(
-                    subject,
-                    full_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [settings.CONTACT_EMAIL],
-                    fail_silently=False,
-                )
-                messages.success(request, 'Your message has been sent successfully!')
-                return redirect('contact')  
-            except Exception as e:
-                messages.error(request, 'An error occurred while sending the message.')
+            text_content = f"Message from {name} <{email}>:\n\n{message}"
 
-        return render(request, 'pages/Contact.html')
+            msg = EmailMultiAlternatives(
+                subject=subject,
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[settings.CONTACT_EMAIL],
+            )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+
+        except Exception as e:
+            print("EMAIL ERROR:", e)  # Logs the error silently
+            # messages.error(request, f'An error occurred while sending the message: {e}')  # ← Removed
+
+    return render(request, 'pages/Contact.html')
 
 def logout(request):
         logoutuser(request)
